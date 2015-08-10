@@ -152,8 +152,8 @@ class BAYMS {
          if (in_array($key, $relevant))
             $stmt->bindValue(':' . $key, $value);
 
-      $user = $stmt->execute();
-      return (bool)$user;
+      $update = $stmt->execute();
+      return (bool)$update;
    }
 
    /**
@@ -172,5 +172,107 @@ class BAYMS {
       return (bool)$delete;
    }
 
+   /**
+    * Returns information about each event in the events table.
+    */
+   public function getAllEvents() {
+      $stmt = $this->db->prepare("
+         SELECT * FROM events
+      ");
+      $result = array();
+      $events = $stmt->execute();
+      while ($event = $events->fetchArray(SQLITE3_ASSOC))
+         $result[] = $event;
+      return $result;
+   }
+
+   /**
+    * Returns information about the event specified by $event_id.
+    */
+   public function getEvent($event_id) {
+      $stmt = $this->db->prepare("
+         SELECT * FROM events WHERE
+            event_id = :event_id
+      ");
+      $stmt->bindValue(':event_id', $event_id);
+      $event = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+      return $event;
+   }
+
+   /**
+    * Inserts a new row into the events table, and then calls the updateEvent
+    * function to actually store the values provided by the $event array. Only
+    * user_type 2 and higher can use this function.
+    */
+   public function insertEvent($event) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         INSERT INTO events DEFAULT VALUES
+      ");
+      $insert = $stmt->execute();
+      if ($insert) {
+         $event_id = $this->db->lastInsertRowID();
+         return $this->updateEvent($event, $event_id);
+      }
+      return false;
+   }
+
+   /**
+    * Extracts relevant values from the $event array and and updates the event
+    * with $event_id. Only user_type 2 and higher can use this function.
+    */
+   public function updateEvent($event, $event_id) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $relevant = [
+         "event_date", "event_time", "event_location", "event_recording"
+      ];
+      $found = false;
+      $partial = "";
+      foreach($event as $key => $value) {
+         if (in_array($key, $relevant)) {
+            $found = true;
+            $partial .= $key . ' = :' . $key . ', ';
+         }
+      }
+      $partial = rtrim($partial, ', ');
+      if (!$found)
+         return true;
+
+      $stmt = $this->db->prepare("
+         UPDATE events SET
+            $partial
+         WHERE
+            event_id = :event_id
+      ");
+      $stmt->bindValue(':event_id', $event_id);
+      foreach($event as $key => $value)
+         if (in_array($key, $relevant))
+            $stmt->bindValue(':' . $key, $value);
+
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+
+   /**
+    * Deletes the the event specified by $event_id. This does not remove pieces
+    * linked with this $event_id. Only user_type 2 and higher can use this
+    * function.
+    */
+   public function deleteEvent($event_id) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         DELETE FROM events WHERE
+            event_id = :event_id
+      ");
+      $stmt->bindValue(':event_id', $event_id);
+      $delete = $stmt->execute();
+      return (bool)$delete;
+   }
 }
 ?>
