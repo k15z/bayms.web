@@ -5,6 +5,9 @@ BAYMS, (2) allow members to update their profile and add pieces to events, and
 (3) allows admins to admit/reject applicants, manage events, approve/reject
 submitted pieces.
 
+## interface
+![BAYMS.Web Login Page](screenshot.png)
+
 ## functions
 ```
 class BAYMS
