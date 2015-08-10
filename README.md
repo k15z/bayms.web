@@ -44,12 +44,12 @@ CREATE TABLE `events` (
 ```
 CREATE TABLE `pieces` (
    `piece_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+   `piece_approved` INTEGER DEFAULT 0,
    `user_id` INTEGER,
    `event_id` INTEGER,
    `piece_name` TEXT,
    `piece_composer` TEXT,
    `piece_performer` TEXT,
-   `piece_information` TEXT,
-   `piece_approved` INTEGER
+   `piece_information` TEXT
 )
 ```
