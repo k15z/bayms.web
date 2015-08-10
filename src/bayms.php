@@ -204,8 +204,10 @@ class BAYMS {
       ");
       $result = array();
       $events = $stmt->execute();
-      while ($event = $events->fetchArray(SQLITE3_ASSOC))
+      while ($event = $events->fetchArray(SQLITE3_ASSOC)) {
+         $event['pieces'] = $this->getAllPieces($event['event_id']);
          $result[] = $event;
+      }
       return $result;
    }
 
@@ -219,6 +221,7 @@ class BAYMS {
       ");
       $stmt->bindValue(':event_id', $event_id);
       $event = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+      $event['pieces'] = $this->getAllPieces($event['event_id']);
       return $event;
    }
 
