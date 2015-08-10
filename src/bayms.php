@@ -75,6 +75,23 @@ class BAYMS {
    }
 
    /**
+    * Returns information about all users in the database. This function is
+    * only available for user_type 2 and higher.
+    */
+   public function getAllUsers() {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         SELECT * FROM users
+      ");
+      $result = array();
+      $users = $stmt->execute();
+      while ($user = $users->fetchArray(SQLITE3_ASSOC))
+         $result[] = $user;
+      return $result;
+   }
+   /**
     * Returns an array of information about the user specified by $user_id. If
     * the user_id is not specified, the current logged-in user's user_id is
     * used. This function uses the verifyUserID function to handle permissions.
@@ -155,22 +172,5 @@ class BAYMS {
       return (bool)$delete;
    }
 
-   /**
-    * Returns information about all users in the database. This function is
-    * only available for user_type 2 and higher.
-    */
-   public function getAllUsers() {
-      if ($this->user_type < 2)
-         throw new Exception('Permission denied.');
-
-      $stmt = $this->db->prepare("
-         SELECT * FROM users
-      ");
-      $result = array();
-      $users = $stmt->execute();
-      while ($user = $users->fetchArray(SQLITE3_ASSOC))
-         $result[] = $user;
-      return $result;
-   }
 }
 ?>
