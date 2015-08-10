@@ -8,12 +8,14 @@ var BAYMS = (function() {
    exports.login = function(user_name, user_pass, do_next) {
       $.ajax({
          method: "POST",
-         url: "./api/api.php?x=login",
+         url: "./api/api.php?x=get_user",
          dataType: "json",
          data: { "user_name": user_name, "user_pass": user_pass
          }
       }).done(function(data) {
          if (data) {
+            console.log(data.user_type);
+            sessionStorage.setItem('user_type', data.user_type);
             sessionStorage.setItem('user_name', user_name);
             sessionStorage.setItem('user_pass', user_pass);
             do_next(true);
@@ -34,6 +36,7 @@ var BAYMS = (function() {
          }
       }).done(function(data) {
          if (data) {
+            sessionStorage.setItem('user_type', 0);
             sessionStorage.setItem('user_name', user_name);
             sessionStorage.setItem('user_pass', user_pass);
             do_next(true);
@@ -49,5 +52,20 @@ var BAYMS = (function() {
       sessionStorage.clear();
    }
 
+   exports.render = function() {
+      $('.only').hide();
+      if (exports.isLoggedIn) {
+         var user_type = sessionStorage.getItem('user_type');
+         if (user_type == 1)
+            $('.only.members').show();
+         if (user_type == 2)
+            $('.only.admins').show();
+      }
+   }
+
    return exports;
 })();
+
+$(document).ready(function() {
+   BAYMS.render()
+});

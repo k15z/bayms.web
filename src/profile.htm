@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>BAYMS.Web</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
+   <link rel="icon" type="image/png" href="./favicon.ico"/>
+   <link rel="stylesheet" href="css/font-awesome.css"/>
+   <link rel="stylesheet" href="css/normalize.css"/>
+   <link rel="stylesheet" href="css/skeleton.css"/>
+   <link rel="stylesheet" href="css/bayms.css"/>
+   <script src="js/jquery-2.1.4.js"></script>
+   <script src="js/bayms.js"></script>
+   <script>
+      if (!BAYMS.isLoggedIn())
+         window.location.href = "index.htm";
+   </script>
+</head>
+<body>
+   <div class="container">
+      <div id="header" class="row">
+         <div class="column">
+            <div class="pull-left">
+               <a class="button button-primary" href="profile.htm">Profile</a>
+               <a class="button only members admins" href="events.htm">Events</a>
+               <a class="button only admins" href="members.htm">Members</a>
+            </div>
+            <div class="pull-right">
+               <a class="button" href="index.htm" onclick="BAYMS.logOut();">Log Out</a>
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="column">
+            <form id="profile">
+               <h3><i id="load_progress" class="fa fa-circle-o-notch fa-spin"></i> Profile</h3>
+               <div class="row">
+                  <div class="six columns">
+                     <label for="student_name">Student Name</label>
+                     <input class="u-full-width" type="text" placeholder="Full Name" id="student_name">
+                     <label for="student_phone">Student Phone</label>
+                     <input class="u-full-width" type="text" placeholder="(###)-###-####" id="student_phone">
+                     <label for="student_email">Student Email</label>
+                     <input class="u-full-width" type="email" placeholder="you@email.com" id="student_email">
+                  </div>
+                  <div class="six columns">
+                     <label for="parent_name">Parent Name</label>
+                     <input class="u-full-width" type="text" placeholder="Full Name" id="parent_name">
+                     <label for="parent_phone">Parent Phone</label>
+                     <input class="u-full-width" type="text" placeholder="(###)-###-####" id="parent_phone">
+                     <label for="parent_email">Parent Email</label>
+                     <input class="u-full-width" type="email" placeholder="you@email.com" id="parent_email">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="seven columns">
+                     <label for="home_address">Home Address</label>
+                     <input class="u-full-width" type="text" placeholder="Street address, city, state, zip code..." id="home_address">
+                  </div>
+                  <div class="five columns">
+                     <label for="home_address">Current School</label>
+                     <input class="u-full-width" type="text" placeholder="Lower/middle/upper school..." id="current_school">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="four columns">
+                     <label for="instrument_1">Instrument 1</label>
+                     <input class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_1">
+                     <textarea class="u-full-width" placeholder="Experience level, years played..." id="instrument_1_about"></textarea>
+                  </div>
+                  <div class="four columns">
+                     <label for="instrument_2">Instrument 2</label>
+                     <input class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_2">
+                     <textarea class="u-full-width" placeholder="Experience level, years played..." id="instrument_2_about"></textarea>
+                  </div>
+                  <div class="four columns">
+                     <label for="instrument_3">Instrument 3</label>
+                     <input class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_3">
+                     <textarea class="u-full-width" placeholder="Experience level, years played..." id="instrument_3_about"></textarea>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="column">
+                     <label for="performance_experience">Performance Experience</label>
+                     <textarea class="u-full-width" placeholder="Where (and with who) have you performed?" id="performance_experience"></textarea>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="column">
+                     <label for="additional_information">Additional Information</label>
+                     <textarea class="u-full-width" placeholder="Anything you want to add?" id="additional_information"></textarea>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
+                     <div id="save_error" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+                        <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
+                     </div>
+                  </div>
+               </div>
+               <i id="save_progress" class="fa fa-circle-o-notch fa-spin fa-2x pull-left"></i>
+               <input class="button-primary pull-right" type="submit" value="Save">
+            </form>
+         </div>
+      </div>
+   </div>
+   <script>
+      (function() {
+         if (!sessionStorage.getItem('user_name'))
+            window.location.href="index.htm";
+         var user_name = sessionStorage.getItem('user_name');
+         var user_pass = sessionStorage.getItem('user_pass');
+
+         // load existing data
+         $("#load_progress").show();
+         $.ajax({
+            method: "POST",
+            url: "./api/api.php?x=get_user",
+            dataType: "json",
+            data: {
+               "user_name": user_name,
+               "user_pass": user_pass
+            }
+         }).done(function(data) {
+            $("#load_progress").hide();
+            if (data) {
+               for (var key in data) {
+                  if (data.hasOwnProperty(key)) {
+                     $('#' + key).val(data[key]);
+                  }
+               }
+            } else {
+               alert("Something went wrong.");
+               sessionStorage.clear();
+               window.location.href = "index.htm";
+            }
+         }).error(function(err) {
+               alert("Something went wrong.");
+               sessionStorage.clear();
+               window.location.href = "index.htm";
+         });
+
+         $("#save_error").hide();
+         $("#save_progress").hide();
+         $("#profile").submit(function(event) {
+            event.preventDefault();
+            var data = {
+               "user_name": user_name,
+               "user_pass": user_pass
+            };
+            var inputs = $("#profile").find("input, textarea");
+            for (var i = 0; i < inputs.length; i++) {
+               var id = $(inputs[i]).attr("id");
+               var value = $(inputs[i]).val();
+               data[id] = value;
+            }
+
+            $("#save_error").hide();
+            $("#save_progress").show();
+            $.ajax({
+               method: "POST",
+               url: "./api/api.php?x=update_user",
+               dataType: "json",
+               data: data
+            }).done(function(data) {
+               $("#save_progress").hide();
+               if (data) {
+
+               } else {
+                  $("#save_error").show();
+               }
+            }).error(function(err) {
+               $("#save_error").show();
+            });
+         });
+      })();
+   </script>
+</body>
+</html>
