@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+     <title>BAYMS.Web</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
+     <link rel="icon" type="image/png" href="./favicon.ico"/>
+     <link rel="stylesheet" href="css/font-awesome.css"/>
+     <link rel="stylesheet" href="css/normalize.css"/>
+     <link rel="stylesheet" href="css/skeleton.css"/>
+   </head>
+   <body>
+     <div class="container">
+       <div class="row">
+         <div class="one-half column" style="margin-top: 10%">
+           <h1>BAYMS.Web</h1>
+           <form>
+              <div class="row">
+                <div class="columns">
+                  <label for="user_name">Username</label>
+                  <input id="user_name" class="u-full-width" type="text">
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns">
+                  <label for="user_pass">Password</label>
+                  <input id="user_pass" class="u-full-width" type="text">
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns">
+                   <div style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+                      <i id="login_error" class="fa fa-exclamation-triangle"></i> Please check your username/password.
+                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="columns">
+                   <progress id="login_progress" class="u-full-width"></progress>
+                </div>
+              </div>
+              <input id="login" class="button-primary" type="button" value="Login">
+            </form>
+         </div>
+       </div>
+     </div>
+   </body>
+</html>
