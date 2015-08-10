@@ -154,7 +154,7 @@ class BAYMS {
       $partial = "";
       foreach($user as $key => $value) {
          if ($key == "user_pass")
-            $user["user_pass"] = password_hash($user_pass, PASSWORD_DEFAULT);
+            $user["user_pass"] = password_hash($user["user_pass"], PASSWORD_DEFAULT);
          if (in_array($key, $relevant)) {
             $found = true;
             $partial .= $key . ' = :' . $key . ', ';
