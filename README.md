@@ -10,7 +10,7 @@ submitted pieces.
 CREATE TABLE `users` (
    `user_id` INTEGER PRIMARY KEY AUTOINCREMENT,
    `user_type` INTEGER DEFAULT 0,
-   `user_name` TEXT,
+   `user_name` TEXT UNIQUE,
    `user_pass` TEXT,
    `student_name` TEXT,
    `student_phone` TEXT,
