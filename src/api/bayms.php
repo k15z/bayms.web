@@ -140,7 +140,6 @@ class BAYMS {
       $user_id = $this->verifyUserID($user_id);
 
       $relevant = [
-         "user_pass",
          "student_name", "student_phone", "student_email",
          "parent_name", "parent_phone", "parent_email",
          "home_address", "current_school",
@@ -153,8 +152,6 @@ class BAYMS {
       $found = false;
       $partial = "";
       foreach($user as $key => $value) {
-         if ($key == "user_pass")
-            $user["user_pass"] = password_hash($user["user_pass"], PASSWORD_DEFAULT);
          if (in_array($key, $relevant)) {
             $found = true;
             $partial .= $key . ' = :' . $key . ', ';
