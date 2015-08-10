@@ -52,13 +52,18 @@ var BAYMS = (function() {
       sessionStorage.clear();
    }
 
+   exports.isAdmin = function() { return sessionStorage.getItem('user_type') == 2};
+   exports.isMember = function() { return sessionStorage.getItem('user_type') == 1};
+   exports.isApplicant = function() { return sessionStorage.getItem('user_type') == 0};
    exports.render = function() {
       $('.only').hide();
       if (exports.isLoggedIn) {
          var user_type = sessionStorage.getItem('user_type');
-         if (user_type == 1)
+         if (exports.isApplicant())
+            $('.only.applicant').show();
+         if (exports.isMember())
             $('.only.members').show();
-         if (user_type == 2)
+         if (exports.isAdmin())
             $('.only.admins').show();
       }
    }
