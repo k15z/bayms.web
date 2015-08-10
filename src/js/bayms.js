@@ -63,6 +63,46 @@ var BAYMS = (function() {
       }
    }
 
+   exports.getUser = function(do_next) {
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=get_user",
+         dataType: "json",
+         data: {
+            "user_name": sessionStorage.getItem('user_name'),
+            "user_pass": sessionStorage.getItem('user_pass')
+         }
+      }).done(function(data) {
+         if (data) {
+            do_next(data);
+         } else {
+            do_next(false);
+         }
+      }).error(function(err) {
+         do_next(false);
+      });
+   }
+
+   exports.updateUser = function(user, do_next) {
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=update_user",
+         dataType: "json",
+         data: $.extend({}, user, {
+            "user_name": sessionStorage.getItem('user_name'),
+            "user_pass": sessionStorage.getItem('user_pass')
+         })
+      }).done(function(data) {
+         if (data) {
+            do_next(data);
+         } else {
+            do_next(false);
+         }
+      }).error(function(err) {
+            do_next(false);
+      });
+   }
+
    return exports;
 })();
 

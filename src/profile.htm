@@ -106,22 +106,12 @@
    </div>
    <script>
       (function() {
-         if (!sessionStorage.getItem('user_name'))
-            window.location.href="index.htm";
-         var user_name = sessionStorage.getItem('user_name');
-         var user_pass = sessionStorage.getItem('user_pass');
+         $("#save_error").hide();
+         $("#save_progress").hide();
 
          // load existing data
          $("#load_progress").show();
-         $.ajax({
-            method: "POST",
-            url: "./api/api.php?x=get_user",
-            dataType: "json",
-            data: {
-               "user_name": user_name,
-               "user_pass": user_pass
-            }
-         }).done(function(data) {
+         BAYMS.getUser(function(data) {
             $("#load_progress").hide();
             if (data) {
                for (var key in data) {
@@ -130,24 +120,16 @@
                   }
                }
             } else {
-               alert("Something went wrong.");
+               alert("Something went wrong. Please try again later.");
                sessionStorage.clear();
                window.location.href = "index.htm";
             }
-         }).error(function(err) {
-               alert("Something went wrong.");
-               sessionStorage.clear();
-               window.location.href = "index.htm";
-         });
+         })
 
-         $("#save_error").hide();
-         $("#save_progress").hide();
+         // update new data
          $("#profile").submit(function(event) {
             event.preventDefault();
-            var data = {
-               "user_name": user_name,
-               "user_pass": user_pass
-            };
+            var data = {};
             var inputs = $("#profile").find("input, textarea");
             for (var i = 0; i < inputs.length; i++) {
                var id = $(inputs[i]).attr("id");
@@ -157,21 +139,13 @@
 
             $("#save_error").hide();
             $("#save_progress").show();
-            $.ajax({
-               method: "POST",
-               url: "./api/api.php?x=update_user",
-               dataType: "json",
-               data: data
-            }).done(function(data) {
+            BAYMS.updateUser(data, function(data) {
                $("#save_progress").hide();
                if (data) {
-
                } else {
                   $("#save_error").show();
                }
-            }).error(function(err) {
-               $("#save_error").show();
-            });
+            })
          });
       })();
    </script>
