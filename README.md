@@ -8,8 +8,8 @@ submitted pieces.
 ## database
 ```
 CREATE TABLE `users` (
-   `user_id` INT AUTO INCREMENT PRIMARY KEY,
-   `user_type` INT DEFAULT 0,
+   `user_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+   `user_type` INTEGER DEFAULT 0,
    `user_name` TEXT,
    `user_pass` TEXT,
    `student_name` TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE `users` (
 
 ```
 CREATE TABLE `events` (
-   `event_id` INT AUTO INCREMENT PRIMARY KEY,
+   `event_id` INTEGER PRIMARY KEY AUTOINCREMENT,
    `event_date` TEXT,
    `event_time` TEXT,
    `event_location` TEXT,
@@ -43,9 +43,9 @@ CREATE TABLE `events` (
 
 ```
 CREATE TABLE `pieces` (
-   `piece_id` INT AUTO INCREMENT PRIMARY KEY,
-   `user_id` INT,
-   `event_id` INT,
+   `piece_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+   `user_id` INTEGER,
+   `event_id` INTEGER,
    `piece_name` TEXT,
    `piece_composer` TEXT,
    `piece_performer` TEXT,
