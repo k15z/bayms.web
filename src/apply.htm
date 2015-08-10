@@ -36,6 +36,12 @@
                </div>
                <div class="row">
                   <div class="columns">
+                     <label for="confirm_user_pass">Confirm Password</label>
+                     <input id="confirm_user_pass" class="u-full-width" type="password">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
                      <div id="apply_error" class="error-message">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
                      </div>
@@ -54,6 +60,8 @@
 
          $("#apply").submit(function(event) {
             event.preventDefault();
+            if ($('#user_pass').val() != $('#confirm_user_pass').val())
+               return(alert("Passwords don't match!"))
             $("#apply_progress").show();
 
             var user_name = $('#user_name').val();
