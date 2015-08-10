@@ -49,6 +49,7 @@ CREATE TABLE `pieces` (
    `piece_name` TEXT,
    `piece_composer` TEXT,
    `piece_performer` TEXT,
-   `piece_information` TEXT
+   `piece_information` TEXT,
+   `piece_approved` INTEGER
 )
 ```
