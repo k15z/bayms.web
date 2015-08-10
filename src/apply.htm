@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <title>Login - BAYMS.Web</title>
+   <title>Apply - BAYMS.Web</title>
    <meta name="viewport" content="width=device-width, initial-scale=1"/>
    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
    <link rel="icon" type="image/png" href="./favicon.ico"/>
@@ -14,8 +14,8 @@
    <div class="container">
       <div class="row">
          <div class="one-half column" style="margin-top: 10%">
-            <h1><i id="login_progress" class="fa fa-circle-o-notch fa-spin"></i> BAYMS.Web</h1>
-            <form id="login">
+            <h1><i id="apply_progress" class="fa fa-circle-o-notch fa-spin"></i> BAYMS.Web</h1>
+            <form id="apply">
                <div class="row">
                   <div class="columns">
                      <label for="user_name">Username</label>
@@ -30,45 +30,44 @@
                </div>
                <div class="row">
                   <div class="columns">
-                     <div id="login_error" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
-                        <i class="fa fa-exclamation-triangle"></i> Please check your username/password.
+                     <div id="apply_error" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
                      </div>
                   </div>
                </div>
-               <input class="button-primary" type="submit" value="Login">
-               <p>Not a member? Apply <a href="apply.htm">here</a>!</p>
+               <input class="button-primary" type="submit" value="Apply">
             </form>
          </div>
       </div>
    </div>
    <script>
       (function() {
-         $("#login_error").hide();
-         $("#login_progress").hide();
-         $("#login").submit(function(event) {
+         $("#apply_error").hide();
+         $("#apply_progress").hide();
+         $("#apply").submit(function(event) {
             event.preventDefault();
-            $("#login_progress").show();
+            $("#apply_progress").show();
             var user_name = $('#user_name').val();
             var user_pass = $('#user_pass').val();
             $.ajax({
                method: "POST",
-               url: "./api/api.php?x=login",
+               url: "./api/api.php?x=apply",
                dataType: "json",
                data: {
                   "user_name": user_name,
                   "user_pass": user_pass
                }
             }).done(function(data) {
-               $("#login_progress").hide();
+               $("#apply_progress").hide();
                if (data) {
                   sessionStorage.setItem('user_name', user_name);
                   sessionStorage.setItem('user_pass', user_pass);
                   window.location.href = "profile.htm";
                } else {
-                  $("#login_error").show();
+                  $("#apply_error").show();
                }
             }).error(function(err) {
-               $("#login_error").show();
+               $("#apply_error").show();
             });
          });
          if (sessionStorage.getItem('user_name')) {
