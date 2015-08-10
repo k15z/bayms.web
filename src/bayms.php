@@ -91,6 +91,7 @@ class BAYMS {
          $result[] = $user;
       return $result;
    }
+
    /**
     * Returns an array of information about the user specified by $user_id. If
     * the user_id is not specified, the current logged-in user's user_id is
@@ -105,6 +106,28 @@ class BAYMS {
       $stmt->bindValue(':user_id', $user_id);
       $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
       return $user;
+   }
+
+   /**
+    * Sets the user_type of the specified user to 1 if $admitted is true, or
+    * 0 if $admitted is false. If user_type is 0, the user is only an applicant
+    * but if user_type is 1, then the user is a member. Only user_type 2 and
+    * higher can use this function.
+    */
+   public function admitUser($user_id, $admitted = true) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $admitted = $admitted ? 1 : 0;
+      $stmt = $this->db->prepare("
+         UPDATE users SET
+            user_level = $admitted
+         WHERE
+            user_id = :user_id
+      ");
+      $stmt->bindValue(':user_id', $user_id);
+      $update = $stmt->execute();
+      return (bool)$update;
    }
 
    /**
