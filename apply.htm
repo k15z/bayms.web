@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Apply - BAYMS.Web</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <meta name="author" content="Kevin Zhang">
+   <link rel="icon" href="./favicon.ico">
+   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600">
+   <link rel="stylesheet" href="./css/font-awesome.css" />
+   <link rel="stylesheet" href="./css/normalize.css" />
+   <link rel="stylesheet" href="./css/skeleton.css" />
+   <script src="./js/jquery.js"></script>
+   <style>
+   body {
+      background-color: whitesmoke;
+   }
+
+   .progress {
+      display: none;
+      color: #33C3F0;
+   }
+
+   .error {
+      display: none;
+      color: white;
+      background-color: #FF6347;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+   }
+   </style>
+</head>
+<body>
+   <div class="container">
+      <div class="row">
+         <div class="one-half column" style="margin-top: 10%">
+            <h1><i class="progress fa fa-circle-o-notch fa-spin"></i> BAYMS.Web</h1>
+            <form id="apply">
+               <div class="row">
+                  <div class="columns">
+                     <label for="user_name">Username</label>
+                     <input id="user_name" class="u-full-width" type="text">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
+                     <label for="user_pass">Password</label>
+                     <input id="user_pass" class="u-full-width" type="password">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
+                     <label for="confirm_user_pass">Confirm Password</label>
+                     <input id="confirm_user_pass" class="u-full-width" type="password">
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
+                     <div id="security-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, your password is not long enough.
+                     </div>
+                     <div id="password-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, your passwords do not match.
+                     </div>
+                     <div id="apply-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
+                     </div>
+                  </div>
+               </div>
+               <input class="button-primary" type="submit" value="Apply">
+               <p>Already a member? <a href="login.htm">Sign in here</a>!</p>
+            </form>
+         </div>
+      </div>
+   </div>
+   <script>
+   if (sessionStorage.getItem('user_name'))
+      window.location.href = "index.htm";
+   $("#apply").submit(function(event) {
+      event.preventDefault();
+      if ($('#user_pass').length < 6)
+         return $('#security-error').show();
+      if ($('#user_pass').val() != $('#confirm_user_pass').val())
+         return $('#password-error').show();
+
+      $('.progress').show();
+      tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {
+         $('.progress').hide();
+         if (data) {
+            window.location.href = "index.htm";
+         } else {
+            $('#apply-error').show();
+         }
+      });
+   });
+
+   function tryApply(user_name, user_pass, callback) {
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=apply",
+         dataType: "json",
+         data: { "user_name": user_name, "user_pass": user_pass}
+      }).done(function(data) {
+         if (data) {
+            sessionStorage.setItem('user_type', 0);
+            sessionStorage.setItem('user_name', user_name);
+            sessionStorage.setItem('user_pass', user_pass);
+            callback(data);
+         } else {
+            callback(false);
+         }
+      }).error(function(err) {
+         callback(false)
+      });
+   }
+   </script>
+</body>
+</html>
