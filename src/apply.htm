@@ -58,7 +58,7 @@
 
             var user_name = $('#user_name').val();
             var user_pass = $('#user_pass').val();
-            BAYMS.login(user_name, user_pass, function(result) {
+            BAYMS.apply(user_name, user_pass, function(result) {
                $("#apply_progress").hide();
                if (result) {
                   window.location.href = "index.htm";
