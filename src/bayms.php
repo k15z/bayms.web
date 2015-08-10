@@ -297,5 +297,139 @@ class BAYMS {
       $delete = $stmt->execute();
       return (bool)$delete;
    }
+
+   /**
+    * Returns all pieces associated with the specified $event_id.
+    */
+   public function getAllPieces($event_id) {
+      $stmt = $this->db->prepare("
+         SELECT * FROM pieces WHERE
+            event_id = :event_id
+      ");
+      $stmt->bindValue(':event_id', $event_id);
+      $result = array();
+      $pieces = $stmt->execute();
+      while ($piece = $pieces->fetchArray(SQLITE3_ASSOC))
+         $result[] = $piece;
+      return $result;
+   }
+
+   /**
+    * Returns the piece with the specified $piece_id.
+    */
+   public function getPiece($piece_id) {
+      $stmt = $this->db->prepare("
+         SELECT * FROM pieces WHERE
+            piece_id = :piece_id
+      ");
+      $stmt->bindValue(':piece_id', $piece_id);
+      $piece = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+      return $piece;
+   }
+
+   /**
+    * Inserts a new row into the pieces table and calls updatePiece to set the
+    * values in the $piece array. Only user_type 1 and higher can use this
+    * function.
+    */
+   public function submitPiece($piece) {
+      if ($this->user_type < 1)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         INSERT INTO pieces (user_id) VALUES (:user_id)
+      ");
+      $stmt->bindValue(':user_id', $this->user_id);
+      $insert = $stmt->execute();
+      if ($insert) {
+         $piece_id = $this->db->lastInsertRowID();
+         return $this->updatePiece($piece, $piece_id);
+      }
+      return false;
+   }
+
+   /**
+    * Sets the piece_approved value of the piece with the specified $piece_id
+    * to 1 or 0, depending on whether $approved is true or false. Only
+    * user_type 2 and higher can use this function.
+    */
+   public function approvePiece($piece_id, $approved = true) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $approved = $approved ? 1 : 0;
+      $stmt = $this->db->prepare("
+         UPDATE pieces SET
+            piece_approved = $approved
+         WHERE
+            piece_id = :piece_id
+      ");
+      $stmt->bindValue(':piece_id', $piece_id);
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+
+   /**
+    * Extract relevant fields from the $piece array and update the piece with
+    * the specified $piece_id. Only user_type 2 and higher OR the original
+    * submitter of the event can use this function.
+    */
+   public function updatePiece($piece, $piece_id) {
+      if ($this->user_type < 1)
+         throw new Exception('Permission denied.');
+
+      $relevant = [
+         "event_id", "piece_name",
+         "piece_composer", "piece_performer", "piece_information"
+      ];
+      $found = false;
+      $partial = "";
+      foreach($piece as $key => $value) {
+         if (in_array($key, $relevant)) {
+            $found = true;
+            $partial .= $key . ' = :' . $key . ', ';
+         }
+      }
+      $partial = rtrim($partial, ', ');
+      if (!$found)
+         return true;
+
+      $stmt = $this->db->prepare("
+         UPDATE pieces SET
+            $partial
+         WHERE
+            piece_id = :piece_id
+            AND (user_id = :user_id OR :user_type > 2)
+      ");
+      $stmt->bindValue(':piece_id', $piece_id);
+      $stmt->bindValue(':user_id', $this->user_id);
+      $stmt->bindValue(':user_type', $this->user_type, SQLITE3_INTEGER);
+      foreach($piece as $key => $value)
+         if (in_array($key, $relevant))
+            $stmt->bindValue(':' . $key, $value);
+
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+
+   /**
+    * Delete the piece with the specified $piece_id. Only user_type 2 and
+    * higher OR the original submitter of the event can use this function.
+    */
+   public function deletePiece($piece_id) {
+      if ($this->user_type < 1)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         DELETE FROM pieces WHERE
+            piece_id = :piece_id
+            AND (user_id = :user_id OR :user_type > 2)
+      ");
+      $stmt->bindValue(':piece_id', $piece_id);
+      $stmt->bindValue(':user_id', $this->user_id);
+      $stmt->bindValue(':user_type', $this->user_type, SQLITE3_INTEGER);
+      $delete = $stmt->execute();
+      return (bool)$delete;
+   }
 }
 ?>
