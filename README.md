@@ -8,28 +8,27 @@ submitted pieces.
 ## functions
 ```
 class BAYMS
-   public function login($user_name, $user_pass)
-   public function apply($user_name, $user_pass)
-   private function verifyUserID($user_id)
+   function login($user_name, $user_pass)
+   function apply($user_name, $user_pass)
 
-   public function getAllUsers()
-   public function getUser($user_id = false)
-   public function admitUser($user_id, $admitted = true)
-   public function updateUser($user, $user_id = false)
-   public function deleteUser($user_id = false)
+   function getAllUsers()
+   function getUser($user_id = false)
+   function admitUser($user_id, $admitted = true)
+   function updateUser($user, $user_id = false)
+   function deleteUser($user_id = false)
 
-   public function getAllEvents()
-   public function getEvent($event_id)
-   public function insertEvent($event)
-   public function updateEvent($event, $event_id)
-   public function deleteEvent($event_id)
+   function getAllEvents()
+   function getEvent($event_id)
+   function insertEvent($event)
+   function updateEvent($event, $event_id)
+   function deleteEvent($event_id)
 
-   public function getAllPieces($event_id)
-   public function getPiece($piece_id)
-   public function submitPiece($piece)
-   public function approvePiece($piece_id, $approved = true)
-   public function updatePiece($piece, $piece_id)
-   public function deletePiece($piece_id)
+   function getAllPieces($event_id)
+   function getPiece($piece_id)
+   function submitPiece($piece)
+   function approvePiece($piece_id, $approved = true)
+   function updatePiece($piece, $piece_id)
+   function deletePiece($piece_id)
 ```
 
 ## database
