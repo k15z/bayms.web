@@ -9,6 +9,7 @@
    <link rel="stylesheet" href="css/normalize.css"/>
    <link rel="stylesheet" href="css/skeleton.css"/>
    <script src="js/jquery-2.1.4.js"></script>
+   <script src="js/render.js"></script>
    <style>
    #header {
       margin-top: 10px;
@@ -27,7 +28,8 @@
          <div class="column">
             <div class="pull-left">
                <a class="button" href="profile.htm">Profile</a>
-               <a class="button button-primary" href="events.htm">Events</a>
+               <a class="button only members button-primary" href="events.htm">Events</a>
+               <a class="button only admins" href="members.htm">Members</a>
             </div>
             <div class="pull-right">
                <a class="button" href="index.htm" onclick="sessionStorage.clear();">Log Out</a>
