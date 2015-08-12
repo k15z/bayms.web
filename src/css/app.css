@@ -1,0 +1,41 @@
+body {
+   min-width: 420px;
+}
+
+#header {
+   padding-top: 10px;
+   margin-bottom: 10px;
+   color: white;
+   background-color: #333333;
+}
+
+#header button {
+   border: 0px;
+   color: black;
+   background-color: whitesmoke;
+}
+
+#header button:hover {
+   background-color: white;
+}
+
+#header button.active {
+   color: whitesmoke;
+   background-color: #33C3F0;
+}
+
+#header button.active:hover {
+   color: white;
+}
+
+.progress {
+   color: #33C3F0;
+}
+
+.error {
+   color: white;
+   background-color: #FF6347;
+   padding: 6px 10px;
+   border-radius: 4px;
+   margin-bottom: 1.5rem;
+}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html ng-app="baymsApp">
+<head>
+   <title>BAYMS.Web</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <meta name="author" content="Kevin Zhang">
+   <link rel="icon" href="./favicon.ico">
+   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600">
+   <link rel="stylesheet" href="./css/font-awesome.css" />
+   <link rel="stylesheet" href="./css/normalize.css" />
+   <link rel="stylesheet" href="./css/skeleton.css" />
+   <link rel="stylesheet" href="./css/app.css" />
+   <script src="./js/jquery.js"></script>
+   <script src="./js/angular.js"></script>
+   <script src="./js/app.js"></script>
+   <script>
+      if (!sessionStorage.getItem('user_name'))
+         window.location.href = "login.htm";
+   </script>
+</head>
+<body ng-controller="baymsController">
+
+   <!-- Header -->
+   <nav id="header">
+      <div class="container">
+         <div class="row">
+            <button ng-show="user_type >= 0" ng-class="{active: tab == 0}" ng-click="tab = 0">Profile</button>
+            <button ng-show="user_type >= 1" ng-class="{active: tab == 1}" ng-click="tab = 1">Events</button>
+            <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2">Members</button>
+            <button class="u-pull-right" onclick="sessionStorage.clear();window.location.reload();">Log Out</button>
+         </div>
+      </div>
+   </nav>
+
+   <!-- Profile -->
+   <div ng-controller="profileController" ng-show="tab == 0" class="container">
+      <div class="row">
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Profile <small>{{profile.user_name}}</small></h2>
+         <form ng-submit="updateProfile()">
+            <div class="row">
+               <div class="six columns">
+                  <label for="student_name">Student Name</label>
+                  <input ng-model="profile.student_name" class="u-full-width" type="text" placeholder="Full Name" id="student_name">
+                  <label for="student_phone">Student Phone</label>
+                  <input ng-model="profile.student_phone" class="u-full-width" type="text" placeholder="(###)-###-####" id="student_phone">
+                  <label for="student_email">Student Email</label>
+                  <input ng-model="profile.student_email" class="u-full-width" type="email" placeholder="you@email.com" id="student_email">
+               </div>
+               <div class="six columns">
+                  <label for="parent_name">Parent Name</label>
+                  <input ng-model="profile.parent_name" class="u-full-width" type="text" placeholder="Full Name" id="parent_name">
+                  <label for="parent_phone">Parent Phone</label>
+                  <input ng-model="profile.parent_phone" class="u-full-width" type="text" placeholder="(###)-###-####" id="parent_phone">
+                  <label for="parent_email">Parent Email</label>
+                  <input ng-model="profile.parent_email" class="u-full-width" type="email" placeholder="you@email.com" id="parent_email">
+               </div>
+            </div>
+            <div class="row">
+               <div class="seven columns">
+                  <label for="home_address">Home Address</label>
+                  <input ng-model="profile.home_address" class="u-full-width" type="text" placeholder="Street address, city, state, zip code..." id="home_address">
+               </div>
+               <div class="five columns">
+                  <label for="home_address">Current School</label>
+                  <input ng-model="profile.current_school" class="u-full-width" type="text" placeholder="Lower/middle/upper school..." id="current_school">
+               </div>
+            </div>
+            <div class="row">
+               <div class="four columns">
+                  <label for="instrument_1">Instrument 1</label>
+                  <input ng-model="profile.instrument_1" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_1">
+                  <textarea ng-model="profile.instrument_1_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_1_about"></textarea>
+               </div>
+               <div class="four columns">
+                  <label for="instrument_2">Instrument 2</label>
+                  <input ng-model="profile.instrument_2" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_2">
+                  <textarea ng-model="profile.instrument_2_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_2_about"></textarea>
+               </div>
+               <div class="four columns">
+                  <label for="instrument_3">Instrument 3</label>
+                  <input ng-model="profile.instrument_3" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_3">
+                  <textarea ng-model="profile.instrument_3_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_3_about"></textarea>
+               </div>
+            </div>
+            <div class="row">
+               <div class="column">
+                  <label for="performance_experience">Performance Experience</label>
+                  <textarea ng-model="profile.performance_experience" class="u-full-width" placeholder="Where (and with who) have you performed?" id="performance_experience"></textarea>
+               </div>
+            </div>
+            <div class="row">
+               <div class="column">
+                  <label for="additional_information">Additional Information</label>
+                  <textarea ng-model="profile.additional_information" class="u-full-width" placeholder="Anything you want to add?" id="additional_information"></textarea>
+               </div>
+            </div>
+            <div class="row">
+               <div class="columns">
+                  <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+                     <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please come back later.
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+               <input class="button-primary pull-right" type="submit" value="Save">
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- Events -->
+   <div ng-controller="eventsController" ng-show="tab == 1" class="container">
+      <div class="row">
+         <h2>Events</h2>
+      </div>
+   </div>
+
+   <!-- Members -->
+   <div ng-controller="membersController" ng-show="tab == 2" class="container">
+      <div class="row">
+         <h2>Members</h2>
+      </div>
+   </div>
+
+</body>
+</html>
