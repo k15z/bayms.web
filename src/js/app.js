@@ -275,4 +275,6 @@ baymsApp.controller('eventsController', function($scope) {
 
 // Members
 baymsApp.controller('membersController', function($scope) {
+   $scope.isError = false;
+   $scope.isWorking = true;
 });

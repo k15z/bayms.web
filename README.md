@@ -5,6 +5,13 @@ BAYMS, (2) allow members to update their profile and add pieces to events, and
 (3) allows admins to admit/reject applicants, manage events, approve/reject
 submitted pieces.
 
+## api calls
+The API calls map directly into the BAYMS class. The camelCase function names
+are turned into lowercase underscore-separated GET fields ("getAllUsers"
+becomes "./api.php?x=get_all_users") and parameters become REQUEST fields.
+Optional parameters are reproduced accurately, and the returned value is JSON
+encoded before being sent to the client.
+
 ## functions
 ```
 class BAYMS
@@ -26,6 +33,7 @@ class BAYMS
    function getAllPieces($event_id)
    function getPiece($piece_id)
    function submitPiece($piece)
+   function orderPiece($piece_id, $piece_order)
    function approvePiece($piece_id, $approved = true)
    function updatePiece($piece, $piece_id)
    function deletePiece($piece_id)

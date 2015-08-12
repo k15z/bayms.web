@@ -263,6 +263,13 @@
       <div class="row">
          <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Members</h2>
       </div>
+      <div class="row">
+         <div class="columns">
+            <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+               <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
+            </div>
+         </div>
+      </div>
    </div>
 
    <footer>
