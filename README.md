@@ -5,9 +5,6 @@ BAYMS, (2) allow members to update their profile and add pieces to events, and
 (3) allows admins to admit/reject applicants, manage events, approve/reject
 submitted pieces.
 
-## interface
-![BAYMS.Web Login Page](screenshot.png)
-
 ## functions
 ```
 class BAYMS
@@ -57,20 +54,16 @@ CREATE TABLE `users` (
    `instrument_3_about` TEXT,
    `performance_experience` TEXT,
    `additional_information` TEXT
-)
-```
+);
 
-```
 CREATE TABLE `events` (
    `event_id` INTEGER PRIMARY KEY AUTOINCREMENT,
    `event_date` TEXT,
    `event_time` TEXT,
    `event_location` TEXT,
    `event_recording` TEXT
-)
-```
+);
 
-```
 CREATE TABLE `pieces` (
    `piece_id` INTEGER PRIMARY KEY AUTOINCREMENT,
    `piece_approved` INTEGER DEFAULT 0,
@@ -80,5 +73,5 @@ CREATE TABLE `pieces` (
    `piece_composer` TEXT,
    `piece_performer` TEXT,
    `piece_information` TEXT
-)
+);
 ```
