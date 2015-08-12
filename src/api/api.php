@@ -57,6 +57,7 @@ switch ($x) {
 
    case 'admit_user':
       $_REQUEST['admitted'] = isset($_REQUEST['admitted']) ? $_REQUEST['admitted'] : true;
+      $_REQUEST['admitted'] = filter_var($_REQUEST['admitted'], FILTER_VALIDATE_BOOLEAN);
       $result = $bayms->admitUser($_REQUEST['user_id'], $_REQUEST['admitted']);
       die(json_encode($result));
 
@@ -86,12 +87,13 @@ switch ($x) {
       $result = $bayms->submitPiece($_REQUEST);
       die(json_encode($result));
 
-   case 'submit_piece':
-      $result = $bayms->submitPiece($_REQUEST);
+   case 'order_piece':
+      $result = $bayms->orderPiece($_REQUEST['piece_id'], $_REQUEST['piece_order']);
       die(json_encode($result));
 
    case 'approve_piece':
       $_REQUEST['approved'] = isset($_REQUEST['approved']) ? $_REQUEST['approved'] : true;
+      $_REQUEST['approved'] = filter_var($_REQUEST['approved'], FILTER_VALIDATE_BOOLEAN);
       $result = $bayms->approvePiece($_REQUEST['piece_id'], $_REQUEST['approved']);
       die(json_encode($result));
 

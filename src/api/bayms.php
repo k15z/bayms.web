@@ -305,6 +305,7 @@ class BAYMS {
       $stmt = $this->db->prepare("
          SELECT * FROM pieces WHERE
             event_id = :event_id
+         ORDER BY piece_order
       ");
       $stmt->bindValue(':event_id', $event_id);
       $result = array();
@@ -346,6 +347,27 @@ class BAYMS {
          return $this->updatePiece($piece, $piece_id);
       }
       return false;
+   }
+
+   /**
+    * Sets the piece_order value of the piece with the specified $piece_id
+    * to the specified $piece_order. Only user_type 2 and higher can use
+    * this function.
+    */
+   public function orderPiece($piece_id, $piece_order) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         UPDATE pieces SET
+            piece_order = :piece_order
+         WHERE
+            piece_id = :piece_id
+      ");
+      $stmt->bindValue(':piece_id', $piece_id);
+      $stmt->bindValue(':piece_order', $piece_order);
+      $update = $stmt->execute();
+      return (bool)$update;
    }
 
    /**

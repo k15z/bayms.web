@@ -66,6 +66,7 @@ CREATE TABLE `events` (
 
 CREATE TABLE `pieces` (
    `piece_id` INTEGER PRIMARY KEY AUTOINCREMENT,
+   `piece_order` INTEGER DEFAULT 0,
    `piece_approved` INTEGER DEFAULT 0,
    `user_id` INTEGER,
    `event_id` INTEGER,
