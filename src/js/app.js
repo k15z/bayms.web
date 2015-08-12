@@ -69,6 +69,10 @@ baymsApp.controller('profileController', function($scope) {
 baymsApp.controller('eventsController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
+   $scope.$watch('eid', function(newEID, oldEID) {
+      if (newEID >= 0)
+         sessionStorage.setItem('eid', newEID);
+   });
    function loadEvents() {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -91,6 +95,10 @@ baymsApp.controller('eventsController', function($scope) {
          $scope.$apply();
          if ($scope.user_type >= 2)
             $('.sortable').sortable();
+         if (sessionStorage.hasOwnProperty('eid'))
+            $('button[eid='+sessionStorage.getItem('eid')+']').click();
+         else
+            $('button[eid=0]').click();
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
