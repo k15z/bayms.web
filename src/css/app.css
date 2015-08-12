@@ -39,3 +39,19 @@ body {
    border-radius: 4px;
    margin-bottom: 1.5rem;
 }
+
+button.warning {
+   color: white;
+   border-color: salmon;
+   background-color: salmon;
+}
+
+button.warning:hover {
+   color: white;
+   border-color: tomato;
+   background-color: tomato;
+}
+
+.clickable {
+   cursor: pointer;
+}

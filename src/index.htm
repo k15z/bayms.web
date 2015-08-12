@@ -11,11 +11,12 @@
    <link rel="stylesheet" href="./css/skeleton.css" />
    <link rel="stylesheet" href="./css/app.css" />
    <script src="./js/jquery.js"></script>
+   <script src="./js/jquery-ui.js"></script>
    <script src="./js/angular.js"></script>
    <script src="./js/app.js"></script>
    <script>
-      if (!sessionStorage.getItem('user_name'))
-         window.location.href = "login.htm";
+   if (!sessionStorage.getItem('user_name'))
+   window.location.href = "login.htm";
    </script>
 </head>
 <body ng-controller="baymsController">
@@ -35,7 +36,7 @@
    <!-- Profile -->
    <div ng-controller="profileController" ng-show="tab == 0" class="container">
       <div class="row">
-         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Profile <small>{{profile.user_name}}</small></h2>
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Profile</h2>
          <form ng-submit="updateProfile()">
             <div class="row">
                <div class="six columns">
@@ -97,7 +98,7 @@
             <div class="row">
                <div class="columns">
                   <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
-                     <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please come back later.
+                     <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
                   </div>
                </div>
             </div>
@@ -112,14 +113,155 @@
    <!-- Events -->
    <div ng-controller="eventsController" ng-show="tab == 1" class="container">
       <div class="row">
-         <h2>Events</h2>
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Events</h2>
+      </div>
+      <div class="row">
+         <div class="columns">
+            <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+               <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
+            </div>
+         </div>
+      </div>
+      <div class="row">
+         <div class="three columns">
+            <button ng-show="user_type >= 2" ng-click="eid = 0" ng-class="{'button-primary': eid == 0}" class="u-full-width">Create Event</button>
+            <button ng-repeat="event in events" ng-click="$parent.eid = event.event_id" ng-class="{'button-primary': $parent.eid == {{event.event_id}}}" class="u-full-width">{{event.event_id}}: {{event.event_date}}</button>
+         </div>
+         <div class="nine columns">
+            <div ng-show="eid == 0">
+               <form ng-submit="createEvent()">
+                  <div class="row">
+                     <div class="six columns">
+                        <label for="event_date">Event Date</label>
+                        <input ng-model="create_event.event_date" class="u-full-width" placeholder="mm-dd-yyyy" type="text" id="event_date">
+                     </div>
+                     <div class="six columns">
+                        <label for="event_time">Event Time</label>
+                        <input ng-model="create_event.event_time" class="u-full-width" placeholder="hh:mm PM" type="text" id="event_time">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="columns">
+                        <label for="event_location">Event Location</label>
+                        <input ng-model="create_event.event_location" class="u-full-width" placeholder="Location" type="text" id="event_location">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="columns">
+                        <label for="event_recording">Event Recording</label>
+                        <input ng-model="create_event.event_recording" class="u-full-width" placeholder="https://..." type="text" id="event_recording">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                     <input class="button-primary pull-right" type="submit" value="Create Event">
+                  </div>
+               </form>
+            </div>
+            <div ng-repeat="event in events" ng-show="$parent.eid == {{event.event_id}}">
+               <form ng-show="user_type >= 2" ng-submit="updateEvent(event)">
+                  <div class="row">
+                     <div class="six columns">
+                        <label for="event_date">Event Date</label>
+                        <input ng-model="event.event_date" class="u-full-width" type="text" id="event_date">
+                     </div>
+                     <div class="six columns">
+                        <label for="event_time">Event Time</label>
+                        <input ng-model="event.event_time" class="u-full-width" type="text" id="event_time">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="columns">
+                        <label for="event_location">Event Location</label>
+                        <input ng-model="event.event_location" class="u-full-width" type="text" id="event_location">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="columns">
+                        <label for="event_recording">Event Recording</label>
+                        <input ng-model="event.event_recording" class="u-full-width" type="text" id="event_recording">
+                     </div>
+                  </div>
+                  <div class="row">
+                     <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                     <button ng-click="deleteEvent(event.event_id)" class="warning pull-right" type="button" style="margin-left:5px;">Delete Event</button>
+                     <input class="button-primary pull-right" type="submit" value="Update Event">
+                  </div>
+                  <hr/>
+               </form>
+               <div>
+                  <h5>Event Program</h5>
+                  <table class="u-full-width">
+                     <thead>
+                        <tr>
+                           <th>Piece</th>
+                           <th>Composer</th>
+                           <th>Performer</th>
+                           <th>&nbsp;</th>
+                        </tr>
+                     </thead>
+                     <tbody id="sortable-{{event.event_id}}" class="sortable">
+                        <tr ng-repeat="piece in event.pieces" pid="{{piece.piece_id}}">
+                           <td>{{piece.piece_name}}</td>
+                           <td>{{piece.piece_composer}}</td>
+                           <td>{{piece.piece_performer}}</td>
+                           <td>
+                              <span ng-show="piece.piece_approved == 0" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, true)"><i class="fa fa-square-o"></i></span>
+                              <span ng-show="piece.piece_approved == 1" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, false)"><i class="fa fa-check-square-o"></i></span>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <div ng-show="user_type >= 2" class="row">
+                     <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                     <button ng-click="saveOrder(event.event_id)" class="button-primary pull-right">Save Changes</button>
+                  </div>
+                  <hr/>
+               </div>
+               <div>
+                  <h5>Piece Submission</h5>
+                  <form ng-show="user_type >= 1" ng-submit="submitPiece(event.event_id)">
+                     <div class="row">
+                        <div class="columns">
+                           <label for="piece_name">Piece Name</label>
+                           <input ng-model="$parent.submit_piece.piece_name" class="u-full-width" type="text" id="piece_name">
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="four columns">
+                           <label for="piece_composer">Composer</label>
+                           <input ng-model="$parent.submit_piece.piece_composer" class="u-full-width" type="text" id="piece_composer">
+                        </div>
+                        <div class="four columns">
+                           <label for="piece_performer">Performer</label>
+                           <input ng-model="$parent.submit_piece.piece_performer" class="u-full-width" type="text" id="piece_performer">
+                        </div>
+                        <div class="four columns">
+                           <label for="piece_length">Length</label>
+                           <input ng-model="$parent.submit_piece.piece_length" class="u-full-width" type="text" id="piece_length">
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="columns">
+                           <label for="piece_information">Other Information</label>
+                           <textarea ng-model="$parent.submit_piece.piece_information" class="u-full-width" type="text" id="piece_information"></textarea>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                        <input class="button-primary pull-right" type="submit" value="Submit">
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 
    <!-- Members -->
    <div ng-controller="membersController" ng-show="tab == 2" class="container">
       <div class="row">
-         <h2>Members</h2>
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Members</h2>
       </div>
    </div>
 
