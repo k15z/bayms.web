@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>Program - BAYMS.Web</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <meta name="author" content="Kevin Zhang">
+   <link rel="icon" href="./favicon.ico">
+   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600">
+   <link rel="stylesheet" href="./css/normalize.css" />
+   <link rel="stylesheet" href="./css/skeleton.css" />
+   <script src="./js/mustache.js"></script>
+   <script src="./js/jquery.js"></script>
+   <style>
+      #title {
+         text-align: center;
+      }
+   </style>
+</head>
+<body>
+   <div class="container">
+      <div class="row">
+         <div class="column">
+            <br/>
+            <h3 id="title">
+               <!-- AJAX -->
+            </h3>
+         </div>
+      </div>
+      <div class="row">
+         <div class="column">
+            <table class="u-full-width">
+               <thead>
+                  <tr>
+                     <th>Piece Name</th>
+                     <th>Composer</th>
+                     <th>Performer</th>
+                  </tr>
+               </thead>
+               <tbody id="pieces">
+                  <!-- AJAX -->
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <script>
+      var event_id = window.location.hash.replace("#","");
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=get_event",
+         dataType: "json",
+         data: {event_id: event_id}
+      }).done(function(data) {
+         if (data) {
+            console.log(data);
+            var template = "{{event_date}} - {{event_time}} - {{event_location}}";
+            var html = Mustache.to_html(template, data);
+            $('#title').html(html);
+
+            var template = "{{#pieces}}<tr><td>{{piece_name}}</td><td>{{piece_composer}}</td><td>{{piece_performer}}</td></tr>{{/pieces}}";
+            var html = Mustache.to_html(template, data);
+            $('#pieces').html(html);
+
+         } else {
+            alert("Uh oh...")
+         }
+      }).error(function(err) {
+         alert("Uh oh...")
+      });
+   </script>
+</body>
+</html>

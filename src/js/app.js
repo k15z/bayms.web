@@ -183,6 +183,17 @@ baymsApp.controller('eventsController', function($scope) {
          loadEvents();
       });
    };
+   $scope.printEvent = function(event_id) {
+      var printWindow = window.open("program.htm#" + event_id, "print program");
+      var printAndClose = function () {
+         if (printWindow.document.readyState == 'complete') {
+            clearInterval(sched);
+            printWindow.print();
+            printWindow.close();
+         }
+      }
+      var sched = setInterval(printAndClose, 200);
+   }
    $scope.saveOrder = function(event_id) {
       var pieces = $('#sortable-'+event_id).find('tr');
       for (var i = 0; i < pieces.length; i++) {
