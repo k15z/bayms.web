@@ -93,12 +93,21 @@ baymsApp.controller('eventsController', function($scope) {
             $scope.isError = true;
          }
          $scope.$apply();
-         if ($scope.user_type >= 2)
-            $('.sortable').sortable();
          if (sessionStorage.hasOwnProperty('eid'))
             $('button[eid='+sessionStorage.getItem('eid')+']').click();
          else if ($scope.user_type >= 2)
             $('button[eid=0]').click();
+         if ($scope.user_type >= 2) {
+            var fixHelper = function(e, ui) {
+            	ui.children().each(function() {
+            		$(this).width($(this).width());
+            	});
+            	return ui;
+            };
+            $('.sortable').sortable({
+            	helper: fixHelper
+            }).disableSelection();
+         }
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
