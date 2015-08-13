@@ -197,8 +197,6 @@ class BAYMS {
    public function getAllEvents() {
       $stmt = $this->db->prepare("
          SELECT * FROM events
-         WHERE
-            date(event_date) >= date('now', '-1 day')
          ORDER BY date(event_date)
       ");
       $result = array();
