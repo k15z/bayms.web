@@ -277,4 +277,86 @@ baymsApp.controller('eventsController', function($scope) {
 baymsApp.controller('membersController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
+   function loadUsers() {
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=get_all_users",
+         dataType: "json",
+         data: {
+            "user_name": $scope.user_name,
+            "user_pass": $scope.user_pass
+         }
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.users = data;
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         $scope.$apply();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         $scope.$apply();
+      });
+   }; loadUsers();
+   $scope.displayUser = function(user) {
+      $scope.user = user;
+      $('button[uid]').removeClass('button-primary');
+      $('button[uid='+user.user_id+']').addClass('button-primary');
+   }
+   $scope.admitUser = function(user_id, admitted) {
+      $scope.user = false;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=admit_user",
+         dataType: "json",
+         data: {
+            "user_name": $scope.user_name,
+            "user_pass": $scope.user_pass,
+            "user_id": user_id,
+            "admitted": admitted
+         }
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadUsers();
+         $scope.$apply();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         $scope.$apply();
+      });
+   }
+   $scope.deleteUser = function(user_id) {
+      $scope.user = false;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=delete_user",
+         dataType: "json",
+         data: {
+            "user_name": $scope.user_name,
+            "user_pass": $scope.user_pass,
+            "user_id": user_id
+         }
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadUsers();
+         $scope.$apply();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         $scope.$apply();
+      });
+   }
 });

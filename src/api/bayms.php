@@ -121,7 +121,7 @@ class BAYMS {
       $admitted = $admitted ? 1 : 0;
       $stmt = $this->db->prepare("
          UPDATE users SET
-            user_level = $admitted
+            user_type = $admitted
          WHERE
             user_id = :user_id
       ");

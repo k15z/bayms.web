@@ -68,7 +68,7 @@ switch ($x) {
 
    case 'delete_user':
       $_REQUEST['user_id'] = isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : false;
-      $result = $bayms->getUser();
+      $result = $bayms->deleteUser($_REQUEST['user_id']);
       die(json_encode($result));
 
    case 'insert_event':

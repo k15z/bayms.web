@@ -270,12 +270,93 @@
             </div>
          </div>
       </div>
+      <div class="row">
+         <div class="three columns">
+            <h5>Applicants</h5>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 0}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <hr/>
+            <h5>Members</h5>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 1}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <hr/>
+            <h5>Admins</h5>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 2}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+         </div>
+         <div class="nine columns">
+            <table ng-show="user" class="u-full-width">
+               <tr>
+                  <th>Student Name</th>
+                  <td>{{user.student_name}}</td>
+               </tr>
+               <tr>
+                  <th>Student Phone</th>
+                  <td>{{user.student_phone}}</td>
+               </tr>
+               <tr>
+                  <th>Student Email</th>
+                  <td>{{user.student_email}}</td>
+               </tr>
+               <tr>
+                  <th>Parent Name</th>
+                  <td>{{user.parent_name}}</td>
+               </tr>
+               <tr>
+                  <th>Parent Phone</th>
+                  <td>{{user.parent_phone}}</td>
+               </tr>
+               <tr>
+                  <th>Parent Email</th>
+                  <td>{{user.parent_email}}</td>
+               </tr>
+               <tr>
+                  <th>Home Address</th>
+                  <td>{{user.home_address}}</td>
+               </tr>
+               <tr>
+                  <th>Current School</th>
+                  <td>{{user.current_school}}</td>
+               </tr>
+               <tr>
+                  <th>Instrument 1</th>
+                  <td>
+                     {{user.instrument_1}}<br/>
+                     <small>{{user.instrument_1_about}}</small>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Instrument 2</th>
+                  <td>
+                     {{user.instrument_2}}<br/>
+                     <small>{{user.instrument_2_about}}</small>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Instrument 3</th>
+                  <td>
+                     {{user.instrument_3}}<br/>
+                     <small>{{user.instrument_3_about}}</small>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Performance Experience</th>
+                  <td>
+                     {{user.performance_experience}}<br/>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Additional Information</th>
+                  <td>
+                     {{user.additional_information}}<br/>
+                  </td>
+               </tr>
+            </table>
+            <div class="row">
+               <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+               <button ng-show="user.user_type >= 0" style="margin-left:5px;" ng-click="deleteUser(user.user_id)" class="warning button-primary pull-right">Delete</button>
+               <button ng-show="user.user_type == 0" ng-click="admitUser(user.user_id, true)" class="button-primary pull-right">Admit</button>
+               <button ng-show="user.user_type >= 1" style="margin-left:5px;" ng-click="admitUser(user.user_id, false)" class="warning button-primary pull-right">Reject</button>
+            </div>
+         </div>
+      </div>
    </div>
-
-   <footer>
-      <!-- Any derivative works MUST retain this copyright notice. -->
-      Copyright 2015 &copy; <a href="https://www.kevz.me">Kevin Zhang</a>
-      <!-- Any derivative works MUST retain this copyright notice. -->
-   </footer>
 </body>
 </html>
