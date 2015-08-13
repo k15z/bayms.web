@@ -2,7 +2,6 @@
 /**
  * @license The MIT License
  * @author Kevin Zhang
- * @version v0.1.2
  */
 class BAYMS {
    private $db = false;
