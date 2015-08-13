@@ -16,6 +16,8 @@ baymsApp.controller('baymsController', function($scope) {
 baymsApp.controller('profileController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
+
+   // get_user -> $scope.profile
    $.ajax({
       method: "POST",
       url: "./api/api.php?x=get_user",
@@ -38,6 +40,8 @@ baymsApp.controller('profileController', function($scope) {
       $scope.isWorking = false;
       $scope.$apply();
    });
+
+   // $scope.profile -> update_user
    $scope.updateProfile = function() {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -73,6 +77,8 @@ baymsApp.controller('eventsController', function($scope) {
       if (newEID >= 0)
          sessionStorage.setItem('eid', newEID);
    });
+
+   // get_all_events -> $scope.events
    function loadEvents() {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -114,6 +120,8 @@ baymsApp.controller('eventsController', function($scope) {
          $scope.$apply();
       });
    }; loadEvents();
+
+   // $scope.create_event -> insert_event
    $scope.createEvent = function() {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -139,6 +147,8 @@ baymsApp.controller('eventsController', function($scope) {
          loadEvents();
       });
    };
+
+   // current_event -> update_event
    $scope.updateEvent = function(current_event) {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -164,6 +174,8 @@ baymsApp.controller('eventsController', function($scope) {
          loadEvents();
       });
    };
+
+   // event_id -> delete_event
    $scope.deleteEvent = function(event_id) {
       if (!confirm("Are you sure you want to delete this event?"))
          return;
@@ -192,6 +204,8 @@ baymsApp.controller('eventsController', function($scope) {
          loadEvents();
       });
    };
+
+   // open window with program.htm#<event_id> and print
    $scope.printEvent = function(event_id) {
       var printWindow = window.open("program.htm#" + event_id, "print program");
       var printAndClose = function () {
@@ -203,6 +217,8 @@ baymsApp.controller('eventsController', function($scope) {
       }
       var sched = setInterval(printAndClose, 200);
    }
+
+   // event_id -> order_piece
    $scope.saveOrder = function(event_id) {
       var pieces = $('#sortable-'+event_id).find('tr');
       for (var i = 0; i < pieces.length; i++) {
@@ -236,6 +252,8 @@ baymsApp.controller('eventsController', function($scope) {
       };
       setTimeout(loadEvents, pieces.length*100+1000);
    };
+
+   // piece_id, approved -> approve_piece; event_id -> order_piece
    $scope.approvePiece = function(piece_id, approved) {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -263,6 +281,8 @@ baymsApp.controller('eventsController', function($scope) {
          $scope.saveOrder(sessionStorage.getItem('eid'));
       });
    }
+
+   // $scope.submit_piece -> submit_piece
    $scope.submitPiece = function(event_id) {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -296,6 +316,8 @@ baymsApp.controller('eventsController', function($scope) {
 baymsApp.controller('membersController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
+
+   // get_all_users -> $scope.users
    function loadUsers() {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -324,12 +346,16 @@ baymsApp.controller('membersController', function($scope) {
          $scope.$apply();
       });
    }; loadUsers();
+
+   // user -> $scope.user
    $scope.displayUser = function(user) {
       $scope.user = user;
       sessionStorage.setItem('uid', user.user_id);
       $('button[uid]').removeClass('button-primary');
       $('button[uid='+user.user_id+']').addClass('button-primary');
    }
+
+   // user_id -> admit_user
    $scope.admitUser = function(user_id, admitted) {
       $scope.isError = false;
       $scope.isWorking = true;
@@ -359,6 +385,8 @@ baymsApp.controller('membersController', function($scope) {
          $scope.$apply();
       });
    }
+
+   // user_id -> delete_user
    $scope.deleteUser = function(user_id) {
       $scope.isError = false;
       $scope.isWorking = true;
