@@ -214,7 +214,7 @@ baymsApp.controller('eventsController', function($scope) {
             });
          }, i*100, data)
       };
-      setTimeout(loadEvents, pieces.length*100);
+      setTimeout(loadEvents, (pieces.length+1)*100);
    };
    $scope.approvePiece = function(piece_id, approved) {
       $scope.saveOrder(piece_id);
