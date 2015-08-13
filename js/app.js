@@ -237,7 +237,6 @@ baymsApp.controller('eventsController', function($scope) {
       setTimeout(loadEvents, pieces.length*100+1000);
    };
    $scope.approvePiece = function(piece_id, approved) {
-      $scope.saveOrder(piece_id);
       $scope.isError = false;
       $scope.isWorking = true;
       $.ajax({
@@ -257,11 +256,11 @@ baymsApp.controller('eventsController', function($scope) {
          } else {
             $scope.isError = true;
          }
-         loadEvents();
+         $scope.saveOrder(sessionStorage.getItem('eid'));
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
-         loadEvents();
+         $scope.saveOrder(sessionStorage.getItem('eid'));
       });
    }
    $scope.submitPiece = function(event_id) {
