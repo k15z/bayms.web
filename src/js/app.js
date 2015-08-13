@@ -97,8 +97,6 @@ baymsApp.controller('eventsController', function($scope) {
             $('.sortable').sortable();
          if (sessionStorage.hasOwnProperty('eid'))
             $('button[eid='+sessionStorage.getItem('eid')+']').click();
-         else
-            $('button[eid=0]').click();
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
