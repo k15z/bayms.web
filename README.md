@@ -5,11 +5,13 @@ BAYMS, (2) allow members to update their profile and add pieces to events, and
 (3) allows admins to admit/reject applicants, manage events, approve/reject
 submitted pieces.
 
+> https://dev.bayms.org
+
 ## api calls
 The API calls map directly into the BAYMS class. The camelCase function names
 are turned into lowercase underscore-separated GET fields ("getAllUsers"
-becomes "./api.php?x=get_all_users") and parameters become REQUEST fields.
-Optional parameters are reproduced accurately, and the returned value is JSON
+becomes "./api.php?x=get_all_users") and arguments become REQUEST fields.
+Optional arguments are reproduced accurately, and the returned value is JSON
 encoded before being sent to the client.
 
 ## functions
