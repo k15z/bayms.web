@@ -297,6 +297,8 @@ baymsApp.controller('membersController', function($scope) {
             $scope.isError = true;
          }
          $scope.$apply();
+         if (sessionStorage.hasOwnProperty('uid'))
+            $('button[uid='+sessionStorage.getItem('uid')+']').click();
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
@@ -305,6 +307,7 @@ baymsApp.controller('membersController', function($scope) {
    }; loadUsers();
    $scope.displayUser = function(user) {
       $scope.user = user;
+      sessionStorage.setItem('uid', user.user_id);
       $('button[uid]').removeClass('button-primary');
       $('button[uid='+user.user_id+']').addClass('button-primary');
    }
