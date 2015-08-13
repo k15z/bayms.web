@@ -197,6 +197,9 @@ class BAYMS {
    public function getAllEvents() {
       $stmt = $this->db->prepare("
          SELECT * FROM events
+         WHERE
+            date(event_date) >= date('now', '-1 day')
+         ORDER BY date(event_date)
       ");
       $result = array();
       $events = $stmt->execute();
@@ -259,6 +262,8 @@ class BAYMS {
             $found = true;
             $partial .= $key . ' = :' . $key . ', ';
          }
+         if ($key == "event_date")
+            $event[$key] = date_format(date_create($value, "Y-m-d"));
       }
       $partial = rtrim($partial, ', ');
       if (!$found)
