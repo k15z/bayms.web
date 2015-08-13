@@ -278,6 +278,8 @@ baymsApp.controller('membersController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
    function loadUsers() {
+      $scope.isError = false;
+      $scope.isWorking = true;
       $.ajax({
          method: "POST",
          url: "./api/api.php?x=get_all_users",
@@ -307,6 +309,8 @@ baymsApp.controller('membersController', function($scope) {
       $('button[uid='+user.user_id+']').addClass('button-primary');
    }
    $scope.admitUser = function(user_id, admitted) {
+      $scope.isError = false;
+      $scope.isWorking = true;
       $scope.user = false;
       $.ajax({
          method: "POST",
@@ -334,6 +338,8 @@ baymsApp.controller('membersController', function($scope) {
       });
    }
    $scope.deleteUser = function(user_id) {
+      $scope.isError = false;
+      $scope.isWorking = true;
       $scope.user = false;
       $.ajax({
          method: "POST",
