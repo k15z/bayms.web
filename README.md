@@ -83,6 +83,7 @@ CREATE TABLE `pieces` (
    `piece_name` TEXT,
    `piece_composer` TEXT,
    `piece_performer` TEXT,
+   `piece_length` TEXT,
    `piece_information` TEXT
 );
 ```

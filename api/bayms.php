@@ -422,8 +422,8 @@ class BAYMS {
          throw new Exception('Permission denied.');
 
       $relevant = [
-         "event_id", "piece_name",
-         "piece_composer", "piece_performer", "piece_information"
+         "event_id", "piece_name", "piece_composer",
+         "piece_performer", "piece_length", "piece_information"
       ];
       $found = false;
       $partial = "";
