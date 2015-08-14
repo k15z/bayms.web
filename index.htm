@@ -382,9 +382,11 @@
             </table>
             <div class="row">
                <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
-               <button ng-show="user.user_type >= 0" style="margin-left:5px;" ng-click="deleteUser(user.user_id)" class="warning button-primary pull-right">Delete</button>
-               <button ng-show="user.user_type == 0" ng-click="admitUser(user.user_id, true)" class="button-primary pull-right">Admit</button>
-               <button ng-show="user.user_type == 1" style="margin-left:5px;" ng-click="admitUser(user.user_id, false)" class="warning button-primary pull-right">Reject</button>
+               <button ng-show="user.user_type >= 0" ng-click="deleteUser(user.user_id)" class="warning button-primary pull-right">Delete User</button>
+               <button ng-show="user.user_type == 0" style="margin-right:5px;" ng-click="admitUser(user.user_id, true)" class="button-primary pull-right">Admit Member</button>
+               <button ng-show="user.user_type == 1" style="margin-right:5px;" ng-click="admitUser(user.user_id, false)" class="warning button-primary pull-right">Reject Member</button>
+               <button ng-show="user.user_type == 1" style="margin-right:5px;" ng-click="adminUser(user.user_id, true)" class="button-primary pull-right">Make Admin</button>
+               <button ng-show="user.user_type == 2" style="margin-right:5px;" ng-click="adminUser(user.user_id, false)" class="warning button-primary pull-right">Not Admin</button>
             </div>
          </div>
       </div>
