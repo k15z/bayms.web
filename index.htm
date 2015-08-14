@@ -69,19 +69,31 @@
             <div class="row">
                <div class="four columns">
                   <label for="instrument_1">Instrument 1</label>
-                  <input ng-model="profile.instrument_1" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_1">
+                  <input list="instruments" ng-model="profile.instrument_1" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_1">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_1_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_1_about"></textarea>
                </div>
                <div class="four columns">
                   <label for="instrument_2">Instrument 2</label>
-                  <input ng-model="profile.instrument_2" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_2">
+                  <input list="instruments" ng-model="profile.instrument_2" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_2">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_2_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_2_about"></textarea>
                </div>
                <div class="four columns">
                   <label for="instrument_3">Instrument 3</label>
-                  <input ng-model="profile.instrument_3" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_3">
+                  <input list="instruments" ng-model="profile.instrument_3" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_3">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_3_about" class="u-full-width" placeholder="Experience level, years played..." id="instrument_3_about"></textarea>
                </div>
+               <datalist id="instruments">
+                  <option value="Cello">
+                  <option value="Flute">
+                  <option value="Guitar">
+                  <option value="Oboe">
+                  <option value="Piano">
+                  <option value="Trombone">
+                  <option value="Trumpet">
+                  <option value="Violin">
+                  <option value="Viola">
+                  <option value="Voice">
+               </datalist>
             </div>
             <div class="row">
                <div class="column">
