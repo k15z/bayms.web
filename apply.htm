@@ -56,6 +56,9 @@
                </div>
                <div class="row">
                   <div class="columns">
+                     <div id="security-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, your password is not long enough.
+                     </div>
                      <div id="password-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, your passwords do not match.
                      </div>
@@ -75,8 +78,10 @@
       window.location.href = "index.htm";
    $("#apply").submit(function(event) {
       event.preventDefault();
+      if ($('#user_pass').length < 6)
+         return $('#security-error').show();
       if ($('#user_pass').val() != $('#confirm_user_pass').val())
-      return $('#password-error').show();
+         return $('#password-error').show();
 
       $('.progress').show();
       tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {
