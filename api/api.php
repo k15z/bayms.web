@@ -50,6 +50,10 @@ if (!$result)
 
 // Expose user functions
 switch ($x) {
+   case 'change_password':
+      $result = $bayms->changePassword($_REQUEST['new_user_pass']);
+      die(json_encode($result));
+
    case 'get_all_users':
       $result = $bayms->getAllUsers();
       die(json_encode($result));
