@@ -4,6 +4,10 @@ ini_set("display_errors",1);
 ini_set("display_startup_errors",1);
 error_reporting(-1);
 
+// Hacky way of supporting AngularJS
+if ($ng = json_decode(file_get_contents('php://input'), true))
+   $_REQUEST = array_merge($_REQUEST, $ng);
+
 // Find `x` request parameter
 if (!isset($_REQUEST['x']))
    die('error: x_not_set');
