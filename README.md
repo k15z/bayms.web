@@ -19,6 +19,7 @@ encoded before being sent to the client.
 class BAYMS
    function login($user_name, $user_pass)
    function apply($user_name, $user_pass)
+   function changePassword($new_user_pass)
 
    function getAllUsers()
    function getUser($user_id = false)
