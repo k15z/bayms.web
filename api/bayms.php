@@ -72,7 +72,7 @@ class BAYMS {
          WHERE
             user_id = :user_id
       ");
-      $stmt->bindValue(':user_id', $user_id);
+      $stmt->bindValue(':user_id', $this->user_id);
       $stmt->bindValue(':user_pass', password_hash($new_user_pass, PASSWORD_DEFAULT));
 
       $update = $stmt->execute();
