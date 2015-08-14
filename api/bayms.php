@@ -61,6 +61,25 @@ class BAYMS {
    }
 
    /**
+    * Updates the currently logged-in user with the specified new_user_pass
+    * value. Returns true/false on failure - note that you WILL need to
+    * reauthenticate using the new password after calling this function.
+    */
+   public function changePassword($new_user_pass) {
+      $stmt = $this->db->prepare("
+         UPDATE users SET
+            user_pass = :user_pass
+         WHERE
+            user_id = :user_id
+      ");
+      $stmt->bindValue(':user_id', $this->user_id);
+      $stmt->bindValue(':user_pass', password_hash($new_user_pass, PASSWORD_DEFAULT));
+
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+
+   /**
     * Returns a $user_id or throws an Exception, depending on whether the
     * current logged-in user has permission to access the specified user's
     * data. Only admins or the user themselves should have permission.
