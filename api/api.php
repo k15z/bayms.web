@@ -69,6 +69,12 @@ switch ($x) {
       $result = $bayms->admitUser($_REQUEST['user_id'], $_REQUEST['admitted']);
       die(json_encode($result));
 
+   case 'admin_user':
+      $_REQUEST['admin'] = isset($_REQUEST['admin']) ? $_REQUEST['admin'] : true;
+      $_REQUEST['admin'] = filter_var($_REQUEST['admin'], FILTER_VALIDATE_BOOLEAN);
+      $result = $bayms->admitUser($_REQUEST['user_id'], $_REQUEST['admin']);
+      die(json_encode($result));
+
    case 'update_user':
       $_REQUEST['user_id'] = isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : false;
       $result = $bayms->updateUser($_REQUEST, $_REQUEST['user_id']);

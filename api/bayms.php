@@ -149,6 +149,28 @@ class BAYMS {
    }
 
    /**
+    * Sets the user_type of the specified user to 2 if $admin is true, or
+    * 1 if $admin is false. If user_type is 1, the user is only an member
+    * but if user_type is 0, then the user is a admin. Only user_type 2 and
+    * higher can use this function.
+    */
+   public function adminUser($user_id, $admin = true) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $admin = $admin ? 2 : 1;
+      $stmt = $this->db->prepare("
+         UPDATE users SET
+            user_type = $admin
+         WHERE
+            user_id = :user_id
+      ");
+      $stmt->bindValue(':user_id', $user_id);
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+
+   /**
     * Extract relevant fields from the $user array and update the user
     * specified by $user_id from the users table. If the user_id is not
     * specified, the current logged-in user's user_id is used. This function

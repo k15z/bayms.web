@@ -24,6 +24,7 @@ class BAYMS
    function getAllUsers()
    function getUser($user_id = false)
    function admitUser($user_id, $admitted = true)
+   function adminUser($user_id, $admin = true)
    function updateUser($user, $user_id = false)
    function deleteUser($user_id = false)
 
