@@ -241,6 +241,11 @@
                               <div ng-show="piece.user_id == user_id || user_type >= 2" class="dropdown" style="position: fixed;" id="menu-{{piece.piece_id}}">
                                 <ul class="dropdown-menu" role="menu">
                                   <li>
+                                    <a ng-click="updatePiece(piece)" class="pointer" role="menuitem" tabindex="1">
+                                       Edit Piece
+                                    </a>
+                                  </li>
+                                  <li>
                                     <a ng-click="deletePiece(piece.piece_id)" class="pointer" role="menuitem" tabindex="1">
                                        Delete Piece
                                     </a>

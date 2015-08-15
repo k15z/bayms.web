@@ -282,6 +282,35 @@ baymsApp.controller('eventsController', function($scope) {
       });
    }
 
+   // piece_id -> update_piece
+   $scope.updatePiece = function(piece) {
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=update_piece",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, {
+            "piece_id": piece.piece_id,
+            "piece_name": prompt('Piece name?', piece.piece_name),
+            "piece_composer":  prompt('Piece composer?', piece.piece_composer),
+            "piece_performer":  prompt('Piece performer?', piece.piece_performer)
+         })
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadEvents();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         loadEvents();
+      });
+   }
+
    // piece_id -> delete_piece; event_id -> order_piece
    $scope.deletePiece = function(piece_id) {
       $scope.isError = false;
