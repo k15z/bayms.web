@@ -57,7 +57,7 @@
                </div>
                <div class="row">
                   <div class="columns">
-                     <div class="error">
+                     <div id="login-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Please check your username/password.
                      </div>
                   </div>
@@ -91,7 +91,7 @@
          if (data) {
             window.location.href = "index.htm";
          } else {
-            $('.error').show();
+            $('#login-error').show();
          }
       });
    });

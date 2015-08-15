@@ -248,6 +248,11 @@ class BAYMS {
             $found = true;
             $partial .= $key . ' = :' . $key . ', ';
          }
+         if ($key == "student_birthday") {
+            $formatted = @date_format(date_create($value), "Y-m-d");
+            if ($formatted)
+               $event[$key] = $formatted;
+         }
       }
       $partial = rtrim($partial, ', ');
       if (!$found)
@@ -353,8 +358,11 @@ class BAYMS {
             $found = true;
             $partial .= $key . ' = :' . $key . ', ';
          }
-         if ($key == "event_date")
-            $event[$key] = date_format(date_create($value), "Y-m-d");
+         if ($key == "event_date") {
+            $formatted = @date_format(date_create($value), "Y-m-d");
+            if ($formatted)
+               $event[$key] = $formatted;
+         }
       }
       $partial = rtrim($partial, ', ');
       if (!$found)

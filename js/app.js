@@ -2,19 +2,26 @@ var baymsApp = angular.module('baymsApp', ['ng-context-menu']);
 
 // Authentication & Tabs
 baymsApp.controller('baymsController', function($scope) {
-   $scope.auth = {};
+   $scope.auth = {}; // Sent to server with almost every request
    $scope.user_type = sessionStorage.getItem('user_type');
    if (sessionStorage.getItem('user_name')) {
+      // Traditional username/password authentication
       $scope.auth.user_name = sessionStorage.getItem('user_name');
       $scope.auth.user_pass = sessionStorage.getItem('user_pass');
    }
    else if (sessionStorage.getItem('google_token')) {
+      // Google Sign-In authentication
       $scope.auth.google_token = sessionStorage.getItem('google_token');
    }
 
+   // Restore current tab (or set to default 0)
    $scope.tab = 0;
-   if (sessionStorage.getItem('tab')) $scope.tab = sessionStorage.getItem('tab');
-   $scope.$watch('tab',function(){ sessionStorage.setItem('tab', $scope.tab); })
+   if (sessionStorage.getItem('tab'))
+      $scope.tab = sessionStorage.getItem('tab');
+   // Save the current tab in sessionStorage
+   $scope.$watch('tab',function(){
+      sessionStorage.setItem('tab', $scope.tab);
+   });
 });
 
 // Profile
@@ -73,6 +80,8 @@ baymsApp.controller('profileController', function($scope) {
 baymsApp.controller('eventsController', function($scope) {
    $scope.isError = false;
    $scope.isWorking = true;
+
+   // Save event_id in sessionStorage
    $scope.$watch('eid', function(newEID, oldEID) {
       if (newEID >= 0)
          sessionStorage.setItem('eid', newEID);
@@ -96,10 +105,14 @@ baymsApp.controller('eventsController', function($scope) {
             $scope.isError = true;
          }
          $scope.$apply();
+
+         // Restore current event from sessionStorage
          if (sessionStorage.hasOwnProperty('eid'))
             $('button[eid='+sessionStorage.getItem('eid')+']').click();
          else if ($scope.user_type >= 2)
             $('button[eid=0]').click();
+
+         // If admin, mark pieces as sortable
          if ($scope.user_type >= 2) {
             var fixHelper = function(e, ui) {
             	ui.children().each(function() {
@@ -215,9 +228,11 @@ baymsApp.controller('eventsController', function($scope) {
             piece_id: $(pieces[i]).attr('pid'),
             piece_order: i
          };
+         // Stagger the order_piece requests to prevent database locking
          setTimeout(function(data) {
             $scope.isError = false;
             $scope.isWorking = true;
+            $scope.$apply();
             $.ajax({
                method: "POST",
                url: "./api/api.php?x=order_piece",
@@ -234,9 +249,9 @@ baymsApp.controller('eventsController', function($scope) {
                $scope.isError = true;
                $scope.isWorking = false;
             });
-         }, i*100, data)
+         }, i*50, data)
       };
-      setTimeout(loadEvents, pieces.length*100+1000);
+      setTimeout(loadEvents, pieces.length*50+1000);
    };
 
    // piece_id, approved -> approve_piece; event_id -> order_piece
@@ -258,6 +273,7 @@ baymsApp.controller('eventsController', function($scope) {
          } else {
             $scope.isError = true;
          }
+         // Also save order after approving/disapproving pieces
          $scope.saveOrder(sessionStorage.getItem('eid'));
       }).error(function(err) {
          $scope.isError = true;
@@ -343,6 +359,8 @@ baymsApp.controller('membersController', function($scope) {
             $scope.isError = true;
          }
          $scope.$apply();
+
+         // Restore selected user from sessionStorage
          if (sessionStorage.hasOwnProperty('uid'))
             $('button[uid='+sessionStorage.getItem('uid')+']').click();
       }).error(function(err) {
@@ -355,6 +373,7 @@ baymsApp.controller('membersController', function($scope) {
    // user -> $scope.user
    $scope.displayUser = function(user) {
       $scope.user = user;
+      // Save selected user to sessionStorage
       sessionStorage.setItem('uid', user.user_id);
       $('button[uid]').removeClass('button-primary');
       $('button[uid='+user.user_id+']').addClass('button-primary');

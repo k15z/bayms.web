@@ -14,11 +14,17 @@ becomes "./api.php?x=get_all_users") and arguments become REQUEST fields.
 Optional arguments are reproduced accurately, and the returned value is JSON
 encoded before being sent to the client.
 
+When accessing restricted functions, the user must include authentication
+information with every request. This can be either a user_name/user_pass
+pair or a Google Sign-In token.
+
 ## functions
 ```
 class BAYMS
    function login($user_name, $user_pass)
    function apply($user_name, $user_pass)
+   function googleLogin($google_token)
+   function googleApply($google_token)
    function changePassword($new_user_pass)
 
    function getAllUsers()

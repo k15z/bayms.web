@@ -97,7 +97,7 @@
 
    $("#apply").submit(function(event) {
       event.preventDefault();
-      if ($('#user_pass').length < 6)
+      if ($('#user_pass').val().length < 6)
          return $('#security-error').show();
       if ($('#user_pass').val() != $('#confirm_user_pass').val())
          return $('#password-error').show();
