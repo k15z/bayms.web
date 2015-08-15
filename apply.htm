@@ -92,8 +92,9 @@
       </div>
    </div>
    <script>
-   if (sessionStorage.getItem('user_name'))
+   if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
       window.location.href = "index.htm";
+
    $("#apply").submit(function(event) {
       event.preventDefault();
       if ($('#user_pass').length < 6)
@@ -133,6 +134,8 @@
    }
 
    function googleApply(googleUser) {
+      if (!sessionStorage.getItem('google_token'))
+         gapi.auth2.getAuthInstance().signOut();
      var google_token = googleUser.getAuthResponse().id_token;
       $.ajax({
          method: "POST",
