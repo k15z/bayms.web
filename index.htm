@@ -15,8 +15,8 @@
    <script src="./js/angular.js"></script>
    <script src="./js/app.js"></script>
    <script>
-   if (!sessionStorage.getItem('user_name'))
-   window.location.href = "login.htm";
+   if (!sessionStorage.getItem('user_name') && !sessionStorage.getItem('google_token'))
+      window.location.href = "login.htm";
    </script>
 </head>
 <body ng-controller="baymsController">
@@ -121,7 +121,7 @@
             <div class="row">
                <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
                <input class="button-primary pull-right" type="submit" value="Save">
-               <button class="warning pull-right" onclick="sessionStorage.clear(); window.location.href='password.htm';" style="margin-right:5px;">Change Password</button>
+               <button ng-show="auth.user_name" class="warning pull-right" onclick="sessionStorage.clear(); window.location.href='password.htm';" style="margin-right:5px;">Change Password</button>
             </div>
          </form>
       </div>

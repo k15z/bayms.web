@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
    <title>Apply - BAYMS.Web</title>
+   <meta name="google-signin-client_id" content="293667705573-956voda6p3vco06c8jik51umdql2hmgf.apps.googleusercontent.com">
    <meta name="viewport" content="width=device-width, initial-scale=1"/>
    <meta name="author" content="Kevin Zhang">
    <link rel="icon" href="./favicon.ico">
@@ -9,6 +10,7 @@
    <link rel="stylesheet" href="./css/font-awesome.css" />
    <link rel="stylesheet" href="./css/normalize.css" />
    <link rel="stylesheet" href="./css/skeleton.css" />
+   <script src="//apis.google.com/js/platform.js"></script>
    <script src="./js/jquery.js"></script>
    <style>
    body {
@@ -33,7 +35,7 @@
 <body>
    <div class="container">
       <div class="row">
-         <div class="one-half column" style="margin-top: 10%">
+         <div class="one-half column" style="margin-top: 5%">
             <h1><i class="progress fa fa-circle-o-notch fa-spin"></i> BAYMS.Web</h1>
             <form id="apply">
                <div class="row">
@@ -69,6 +71,21 @@
                </div>
                <input class="button-primary" type="submit" value="Apply">
                <p>Already a member? <a href="login.htm">Sign in here</a>!</p>
+               <hr/>
+               <div class="row">
+                  <div class="columns">
+                     <h5>Or, apply using Google:</h5>
+                     <div class="g-signin2" data-onsuccess="googleApply"></div>
+                     <br/>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="columns">
+                     <div id="google-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> You already applied using this Google account! Please try logging in.
+                     </div>
+                  </div>
+               </div>
             </form>
          </div>
       </div>
@@ -111,6 +128,26 @@
          }
       }).error(function(err) {
          callback(false)
+      });
+   }
+
+   function googleApply(googleUser) {
+     var google_token = googleUser.getAuthResponse().id_token;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=google_apply",
+         dataType: "json",
+         data: {"google_token": google_token}
+      }).done(function(data) {
+         if (data) {
+            sessionStorage.setItem('user_type', 0);
+            sessionStorage.setItem('google_token', google_token);
+            window.location.href = "index.htm";
+         } else {
+            $('#google-error').show();
+         }
+      }).error(function(err) {
+         $('#google-error').show();
       });
    }
    </script>
