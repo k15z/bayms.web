@@ -1,11 +1,16 @@
-var baymsApp = angular.module('baymsApp', []);
+var baymsApp = angular.module('baymsApp', ['ng-context-menu']);
 
 // Authentication & Tabs
 baymsApp.controller('baymsController', function($scope) {
-   $scope.user_id = sessionStorage.getItem('user_id');
+   $scope.auth = {};
    $scope.user_type = sessionStorage.getItem('user_type');
-   $scope.user_name = sessionStorage.getItem('user_name');
-   $scope.user_pass = sessionStorage.getItem('user_pass');
+   if (sessionStorage.getItem('user_name')) {
+      $scope.auth.user_name = sessionStorage.getItem('user_name');
+      $scope.auth.user_pass = sessionStorage.getItem('user_pass');
+   }
+   else if (sessionStorage.getItem('google_token')) {
+      $scope.auth.google_token = sessionStorage.getItem('google_token');
+   }
 
    $scope.tab = 0;
    if (sessionStorage.getItem('tab')) $scope.tab = sessionStorage.getItem('tab');
@@ -22,13 +27,11 @@ baymsApp.controller('profileController', function($scope) {
       method: "POST",
       url: "./api/api.php?x=get_user",
       dataType: "json",
-      data: {
-         "user_name": $scope.user_name,
-         "user_pass": $scope.user_pass
-      }
+      data: $scope.auth
    }).done(function(data) {
       $scope.isWorking = false;
       if (data) {
+         $scope.$root.user_id = data.user_id;
          $scope.profile = data;
          $scope.isError = false;
       } else {
@@ -49,10 +52,7 @@ baymsApp.controller('profileController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=update_user",
          dataType: "json",
-         data: $.extend({}, $scope.profile, {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass
-         })
+         data: $.extend({}, $scope.profile, $scope.auth)
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -86,10 +86,7 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=get_all_events",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass
-         }
+         data: $scope.auth
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -129,10 +126,7 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=insert_event",
          dataType: "json",
-         data: $.extend({
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass
-         }, $scope.create_event)
+         data: $.extend({}, $scope.auth, $scope.create_event)
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -156,10 +150,7 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=update_event",
          dataType: "json",
-         data: $.extend({
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass
-         }, current_event)
+         data: $.extend({}, $scope.auth, current_event)
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -185,11 +176,9 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=delete_event",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "event_id": event_id
-         }
+         })
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -233,10 +222,7 @@ baymsApp.controller('eventsController', function($scope) {
                method: "POST",
                url: "./api/api.php?x=order_piece",
                dataType: "json",
-               data: $.extend({
-                  "user_name": $scope.user_name,
-                  "user_pass": $scope.user_pass,
-               }, data)
+               data: $.extend({}, $scope.auth, data)
             }).done(function(data) {
                $scope.isWorking = false;
                if (data) {
@@ -261,12 +247,36 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=approve_piece",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "piece_id": piece_id,
             "approved": approved
+         })
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
          }
+         $scope.saveOrder(sessionStorage.getItem('eid'));
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         $scope.saveOrder(sessionStorage.getItem('eid'));
+      });
+   }
+
+   // piece_id -> delete_piece; event_id -> order_piece
+   $scope.deletePiece = function(piece_id) {
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=delete_piece",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, {
+            "piece_id": piece_id
+         })
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -290,9 +300,7 @@ baymsApp.controller('eventsController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=submit_piece",
          dataType: "json",
-         data: $.extend({
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "event_id": event_id
          }, $scope.submit_piece)
       }).done(function(data) {
@@ -325,10 +333,7 @@ baymsApp.controller('membersController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=get_all_users",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass
-         }
+         data: $scope.auth
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -364,12 +369,10 @@ baymsApp.controller('membersController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=admit_user",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "user_id": user_id,
             "admitted": admitted
-         }
+         })
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -395,12 +398,10 @@ baymsApp.controller('membersController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=admin_user",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "user_id": user_id,
             "admin": admin
-         }
+         })
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
@@ -426,11 +427,9 @@ baymsApp.controller('membersController', function($scope) {
          method: "POST",
          url: "./api/api.php?x=delete_user",
          dataType: "json",
-         data: {
-            "user_name": $scope.user_name,
-            "user_pass": $scope.user_pass,
+         data: $.extend({}, $scope.auth, {
             "user_id": user_id
-         }
+         })
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {

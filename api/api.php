@@ -27,6 +27,14 @@ switch ($x) {
       $result = $bayms->apply($_REQUEST['user_name'], $_REQUEST['user_pass']);
       die(json_encode($result));
 
+   case 'google_login':
+      $result = $bayms->googleLogin($_REQUEST['google_token']);
+      die(json_encode($result));
+
+   case 'google_apply':
+      $result = $bayms->googleApply($_REQUEST['google_token']);
+      die(json_encode($result));
+
    case 'get_all_events':
       $result = $bayms->getAllEvents();
       die(json_encode($result));
@@ -44,7 +52,11 @@ switch ($x) {
       die(json_encode($result));
 }
 
-$result = $bayms->login($_REQUEST['user_name'], $_REQUEST['user_pass']);
+$result = false;
+if (isset($_REQUEST['user_name']) && $_REQUEST['user_pass'])
+   $result = $bayms->login($_REQUEST['user_name'], $_REQUEST['user_pass']);
+else if (isset($_REQUEST['google_token']))
+   $result = $bayms->googleLogin($_REQUEST['google_token']);
 if (!$result)
    die("error: login_failed");
 

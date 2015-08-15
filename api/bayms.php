@@ -61,6 +61,58 @@ class BAYMS {
    }
 
    /**
+    * Accepts an id_token and uses Google's API to verify that it is valid. If
+    * valid, then the appropriate user_id and user_type values are set. Returns
+    * true/false on success/failure.
+    */
+   public function googleLogin($google_token) {
+      $json = @file_get_contents("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$google_token");
+      $json = json_decode($json, true);
+      if (!$json || !isset($json['sub']))
+         return false;
+
+      $user_google_id = $json['sub'];
+      $stmt = $this->db->prepare("
+         SELECT * FROM users WHERE
+            user_google_id = :user_google_id
+      ");
+      $stmt->bindValue(':user_google_id', $user_google_id);
+
+      $login = $stmt->execute();
+      $login = $login->fetchArray(SQLITE3_ASSOC);
+      if ($login) {
+         $this->user_id = $login['user_id'];
+         $this->user_type = $login['user_type'];
+         return true;
+      }
+      return false;
+   }
+
+   /**
+    * Verifies the given $google_token using Google's API and adds the Google user's
+    * unique ID into the database. It returns the result of calling googleLogin().
+    */
+   public function googleApply($google_token) {
+      $json = @file_get_contents("https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$google_token");
+      $json = json_decode($json, true);
+      if (!$json || !isset($json['sub']))
+         return false;
+
+      $user_google_id = $json['sub'];
+      $stmt = $this->db->prepare("
+         INSERT INTO users
+            (user_name, user_google_id)
+         VALUES
+            (:user_name, :user_google_id)
+      ");
+      $stmt->bindValue(':user_name', str_replace('@gmail.com', '', $json['email']));
+      $stmt->bindValue(':user_google_id', $user_google_id);
+
+      $apply = $stmt->execute();
+      return $this->googleLogin($google_token);
+   }
+
+   /**
     * Updates the currently logged-in user with the specified new_user_pass
     * value. Returns true/false on failure - note that you WILL need to
     * reauthenticate using the new password after calling this function.
@@ -302,7 +354,7 @@ class BAYMS {
             $partial .= $key . ' = :' . $key . ', ';
          }
          if ($key == "event_date")
-            $event[$key] = date_format(date_create($value, "Y-m-d"));
+            $event[$key] = date_format(date_create($value), "Y-m-d");
       }
       $partial = rtrim($partial, ', ');
       if (!$found)
@@ -464,7 +516,7 @@ class BAYMS {
             $partial
          WHERE
             piece_id = :piece_id
-            AND (user_id = :user_id OR :user_type > 2)
+            AND (user_id = :user_id OR :user_type >= 2)
       ");
       $stmt->bindValue(':piece_id', $piece_id);
       $stmt->bindValue(':user_id', $this->user_id);
@@ -488,7 +540,7 @@ class BAYMS {
       $stmt = $this->db->prepare("
          DELETE FROM pieces WHERE
             piece_id = :piece_id
-            AND (user_id = :user_id OR :user_type > 2)
+            AND (user_id = :user_id OR :user_type >= 2)
       ");
       $stmt->bindValue(':piece_id', $piece_id);
       $stmt->bindValue(':user_id', $this->user_id);
