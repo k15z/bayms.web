@@ -30,6 +30,11 @@
       border-radius: 4px;
       margin-bottom: 1.5rem;
    }
+
+   .error a {
+      color: lightblue;
+   }
+
    </style>
 </head>
 <body>
@@ -71,22 +76,18 @@
                </div>
                <input class="button-primary" type="submit" value="Apply">
                <p>Already a member? <a href="login.htm">Sign in here</a>!</p>
-               <hr/>
-               <div class="row">
-                  <div class="columns">
-                     <h5>Or, apply using Google:</h5>
-                     <div class="g-signin2" data-onsuccess="googleApply"></div>
-                     <br/>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="columns">
-                     <div id="google-error" class="error">
-                        <i class="fa fa-exclamation-triangle"></i> You already applied using this Google account! Please try logging in.
-                     </div>
-                  </div>
-               </div>
             </form>
+            <hr/>
+            <div class="row">
+               <div class="columns">
+                  <h5>Or, apply using Google:</h5>
+                  <div id="google-error" class="error">
+                     <i class="fa fa-exclamation-triangle"></i> You already have an account! Please
+                     try signing in at: <a href="login.htm">http://dev.bayms.org/login.htm</a>
+                  </div>
+                  <div class="g-signin2" data-onsuccess="googleApply"></div>
+               </div>
+            </div>
          </div>
       </div>
    </div>

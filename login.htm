@@ -30,6 +30,10 @@
       border-radius: 4px;
       margin-bottom: 1.5rem;
    }
+
+   .error a {
+      color: lightblue;
+   }
    </style>
 </head>
 <body>
@@ -62,8 +66,16 @@
                <p>Not a member? <a href="apply.htm">Apply here</a>!</p>
             </form>
             <hr/>
-            <h5>Or, sign in using Google:</h5>
-            <div class="g-signin2" data-onsuccess="googleLogin"></div>
+            <div class="row">
+               <div class="columns">
+                  <h5>Or, sign in using Google:</h5>
+                  <div id="google-error" class="error">
+                     <i class="fa fa-exclamation-triangle"></i> Account not found! Please
+                     apply for a BAYMS account at: <a href="apply.htm">http://dev.bayms.org/apply.htm</a>
+                  </div>
+                  <div class="g-signin2" data-onsuccess="googleLogin"></div>
+               </div>
+            </div>
          </div>
       </div>
    </div>
@@ -116,10 +128,10 @@
             sessionStorage.setItem('google_token', google_token);
             window.location.href = "index.htm";
          } else {
-            $('.error').show();
+            $('#google-error').show();
          }
       }).error(function(err) {
-         $('.error').show();
+         $('#google-error').show();
       });
    }
    </script>

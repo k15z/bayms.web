@@ -42,6 +42,10 @@ button.warning {
    background-color: salmon;
 }
 
+button.warning a {
+   color: lightblue;
+}
+
 button.warning:hover {
    color: white;
    border-color: tomato;
@@ -50,13 +54,4 @@ button.warning:hover {
 
 .clickable {
    cursor: pointer;
-}
-
-footer {
-   padding: 0.25em;
-   position: fixed;
-   bottom: 0px; left: 0px; right: 0px;
-   text-align: center;
-   color: whitesmoke;
-   background-color: #333333;
 }
