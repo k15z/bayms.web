@@ -90,6 +90,7 @@
                </div>
                <datalist id="instruments">
                   <option value="Cello">
+                  <option value="Clarinet">
                   <option value="Flute">
                   <option value="Guitar">
                   <option value="Oboe">
@@ -99,6 +100,7 @@
                   <option value="Violin">
                   <option value="Viola">
                   <option value="Voice">
+                  <option value="Saxophone">
                </datalist>
             </div>
             <div class="row">
@@ -227,6 +229,7 @@
                            <th>Piece</th>
                            <th>Composer</th>
                            <th>Performer</th>
+                           <th>Length</th>
                            <th>&nbsp;</th>
                         </tr>
                      </thead>
@@ -235,6 +238,8 @@
                            <td>{{piece.piece_name}}</td>
                            <td>{{piece.piece_composer}}</td>
                            <td>{{piece.piece_performer}}</td>
+                           <td>{{piece.piece_length}}</td>
+                           <td><a href="{{piece.piece_information}}">View</a></td>
                            <td>
                               <span ng-show="piece.piece_approved == 0" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, true)"><i class="fa fa-square-o"></i></span>
                               <span ng-show="piece.piece_approved == 1" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, false)"><i class="fa fa-check-square-o"></i></span>
@@ -288,7 +293,7 @@
                      </div>
                      <div class="row">
                         <div class="columns">
-                           <label for="piece_information">Additional Information</label>
+                           <label for="piece_information">Link</label>
                            <textarea ng-model="$parent.submit_piece.piece_information" class="u-full-width" placeholder="https://www.youtube.com/watch?v=P1QUZzeZoPQ" type="text" id="piece_information"></textarea>
                         </div>
                      </div>
