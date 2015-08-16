@@ -57,7 +57,7 @@
                if (data.pieces[i].piece_approved == 0)
                   data.pieces.splice(i--,1);
             }
-            var template = "{{#pieces}}<tr><td>{{piece_name}}</td><td>{{piece_composer}}</td><td>{{piece_performer}}</td></tr>{{/pieces}}";
+            var template = "{{#pieces}}<tr><td>{{{piece_name}}}</td><td>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
             var html = Mustache.to_html(template, data);
             $('#pieces').html(html);
 
