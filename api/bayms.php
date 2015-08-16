@@ -234,6 +234,7 @@ class BAYMS {
       $relevant = [
          "student_name", "student_phone", "student_email", "student_birthday",
          "parent_name", "parent_phone", "parent_email", "parent_2_phone",
+         "home_phone",
          "home_address", "current_school",
          "instrument_1", "instrument_1_about",
          "instrument_2", "instrument_2_about",
