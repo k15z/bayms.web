@@ -239,7 +239,7 @@
                            <td>{{piece.piece_composer}}</td>
                            <td>{{piece.piece_performer}}</td>
                            <td>{{piece.piece_length}}</td>
-                           <td><a href="{{piece.piece_information}}">View</a></td>
+                           <td><a href="{{piece.piece_information}}" target="_blank">View</a></td>
                            <td>
                               <span ng-show="piece.piece_approved == 0" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, true)"><i class="fa fa-square-o"></i></span>
                               <span ng-show="piece.piece_approved == 1" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, false)"><i class="fa fa-check-square-o"></i></span>
