@@ -40,6 +40,24 @@
       </div>
    </div>
    <script>
+      /**
+       * This function filters the input string to prevent common HTML
+       * injection attacks while still allowing <br/> and <b></b> tags.
+       */
+      function safeHTML(html) {
+         var safe = html;
+         safe = safe.split("<br>").join("12br21");
+         safe = safe.split("<br/>").join("12br321");
+         safe = safe.split("<b>").join("12b21");
+         safe = safe.split("<b/>").join("12b321");
+         safe = $('<p>' + safe + '</p>').text();
+         safe = safe.split("12br21").join("<br>");
+         safe = safe.split("12br321").join("<br/>");
+         safe = safe.split("12b21").join("<b>");
+         safe = safe.split("12b321").join("<b/>");
+         return safe;
+      }
+
       var event_id = window.location.hash.replace("#","");
       $.ajax({
          method: "POST",
@@ -56,6 +74,11 @@
             for (var i = 0; i < data.pieces.length; i++) {
                if (data.pieces[i].piece_approved == 0)
                   data.pieces.splice(i--,1);
+               else {
+                  data.pieces[i].piece_name = safeHTML(data.pieces[i].piece_name);
+                  data.pieces[i].piece_composer = safeHTML(data.pieces[i].piece_composer);
+                  data.pieces[i].piece_performer = safeHTML(data.pieces[i].piece_performer);
+               }
             }
             var template = "{{#pieces}}<tr><td>{{{piece_name}}}</td><td>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
             var html = Mustache.to_html(template, data);

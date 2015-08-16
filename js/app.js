@@ -294,7 +294,9 @@ baymsApp.controller('eventsController', function($scope) {
             "piece_id": piece.piece_id,
             "piece_name": prompt('Piece name?', piece.piece_name),
             "piece_composer":  prompt('Piece composer?', piece.piece_composer),
-            "piece_performer":  prompt('Piece performer?', piece.piece_performer)
+            "piece_performer":  prompt('Piece performer?', piece.piece_performer),
+            "piece_length":  prompt('Piece length?', piece.piece_length),
+            "piece_information":  prompt('Link?', piece.piece_information)
          })
       }).done(function(data) {
          $scope.isWorking = false;
@@ -313,6 +315,8 @@ baymsApp.controller('eventsController', function($scope) {
 
    // piece_id -> delete_piece; event_id -> order_piece
    $scope.deletePiece = function(piece_id) {
+      if (!confirm('Are you sure you want to delete this piece?'))
+         return;
       $scope.isError = false;
       $scope.isWorking = true;
       $.ajax({
@@ -468,6 +472,8 @@ baymsApp.controller('membersController', function($scope) {
 
    // user_id -> delete_user
    $scope.deleteUser = function(user_id) {
+      if (!confirm('Are you sure you want to delete the user?'))
+         return;
       $scope.isError = false;
       $scope.isWorking = true;
       $scope.user = false;

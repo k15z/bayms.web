@@ -105,7 +105,7 @@ class BAYMS {
          VALUES
             (:user_name, :user_google_id)
       ");
-      $stmt->bindValue(':user_name', str_replace('@gmail.com', '', $json['email']));
+      $stmt->bindValue(':user_name', str_replace('@gmail.com', '@g', $json['email']));
       $stmt->bindValue(':user_google_id', $user_google_id);
 
       $apply = $stmt->execute();
