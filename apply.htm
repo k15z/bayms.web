@@ -61,6 +61,12 @@
                      <input id="confirm_user_pass" class="u-full-width" type="password">
                   </div>
                </div>
+			   <div class="row">
+                  <div class="columns">
+                     <p id='demo'></p>
+                     <input id="ReCaptcha" class="u-full-width" type="text">
+                  </div>
+               </div>
                <div class="row">
                   <div class="columns">
                      <div id="security-error" class="error">
@@ -71,6 +77,9 @@
                      </div>
                      <div id="apply-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
+                     </div>
+					 <div id="recaptcha-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, the two numbers do not add up correctly.
                      </div>
                   </div>
                </div>
@@ -92,6 +101,12 @@
       </div>
    </div>
    <script>
+	var x = Math.floor((Math.random() * 10) + 1);;
+	var y = Math.floor((Math.random() * 10) + 1);;
+	var z = x + y;
+	document.getElementById("demo").innerHTML = ( x + " + " + y + " = ?" );
+   
+   
    if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
       window.location.href = "index.htm";
 
@@ -101,6 +116,9 @@
          return $('#security-error').show();
       if ($('#user_pass').val() != $('#confirm_user_pass').val())
          return $('#password-error').show();
+	  if ($('#ReCaptcha').val() != $('#z').val())
+         return $('#recaptcha-error').show();
+	  
 
       $('.progress').show();
       tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {
