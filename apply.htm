@@ -101,22 +101,30 @@
       </div>
    </div>
    <script>
+	
+	
 	var x = Math.floor((Math.random() * 10) + 1);;
 	var y = Math.floor((Math.random() * 10) + 1);;
 	var z = x + y;
 	$('#demo').text("What is " + x + " + " + y + " = ?" );
 	
-   if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
+    if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
       window.location.href = "index.htm";
 
-   $("#apply").submit(function(event) {
-      event.preventDefault();
-      if ($('#user_pass').val().length < 6)
-         return $('#security-error').show();
-      if ($('#user_pass').val() != $('#confirm_user_pass').val())
-         return $('#password-error').show();
-	  if (parseInt($('#ReCaptcha').val()) != z)
-         return $('#recaptcha-error').show();
+    $("#apply").submit(function(event) {
+		event.preventDefault();
+		if ($('#user_pass').val().length < 6) {
+			$('.error').hide();
+			return $('#security-error').show();
+		}	
+		if ($('#user_pass').val() != $('#confirm_user_pass').val()) {
+			$('.error').hide();
+			return $('#password-error').show();
+		}
+		if (parseInt($('#ReCaptcha').val()) != z) {
+			$('.error').hide();
+			return $('#recaptcha-error').show();
+		}
 	  
 
       $('.progress').show();
@@ -125,6 +133,7 @@
          if (data) {
             window.location.href = "index.htm";
          } else {
+			$('.error').hide();
             $('#apply-error').show();
          }
       });
