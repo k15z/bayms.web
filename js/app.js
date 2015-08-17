@@ -218,7 +218,6 @@ baymsApp.controller('eventsController', function($scope) {
          if (printWindow.document.readyState == 'complete') {
             clearInterval(sched);
             printWindow.print();
-            printWindow.close();
          }
       }
       var sched = setInterval(printAndClose, 200);
