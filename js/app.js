@@ -296,11 +296,11 @@ baymsApp.controller('eventsController', function($scope) {
          dataType: "json",
          data: $.extend({}, $scope.auth, {
             "piece_id": piece.piece_id,
-            "piece_name": prompt('Piece name?', piece.piece_name),
-            "piece_composer":  prompt('Piece composer?', piece.piece_composer),
-            "piece_performer":  prompt('Piece performer?', piece.piece_performer),
-            "piece_length":  prompt('Piece length?', piece.piece_length),
-            "piece_information":  prompt('Link?', piece.piece_information)
+            "piece_name": (val = prompt('Piece name?', piece.piece_name)) ? val : piece.piece_name,
+            "piece_composer": (val = prompt('Composer?', piece.piece_composer)) ? val : piece.piece_composer,
+            "piece_performer": (val = prompt('Performer?', piece.piece_performer)) ? val : piece.piece_performer,
+            "piece_length": (val = prompt('Length?', piece.piece_length)) ? val : piece.piece_length,
+            "piece_information": (val = prompt('Link?', piece.piece_information)) ? val : piece.piece_information
          })
       }).done(function(data) {
          $scope.isWorking = false;
