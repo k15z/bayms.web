@@ -17,6 +17,12 @@ $x = $_REQUEST['x'];
 require('bayms.php');
 $bayms = new BAYMS();
 
+// Login if possible
+if (isset($_REQUEST['user_name']) && $_REQUEST['user_pass'])
+   $bayms->login($_REQUEST['user_name'], $_REQUEST['user_pass']);
+else if (isset($_REQUEST['google_token']))
+   $bayms->googleLogin($_REQUEST['google_token']);
+
 // Expose non-user functions
 switch ($x) {
    case 'login':
@@ -52,6 +58,7 @@ switch ($x) {
       die(json_encode($result));
 }
 
+// Must login now.
 $result = false;
 if (isset($_REQUEST['user_name']) && $_REQUEST['user_pass'])
    $result = $bayms->login($_REQUEST['user_name'], $_REQUEST['user_pass']);

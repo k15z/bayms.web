@@ -313,7 +313,7 @@ class BAYMS {
    public function getAllEvents() {
       $where = "";
       if ($this->user_type < 2)
-         $where = "WHERE date(event_date) < date('now','-2 day')";
+         $where = "WHERE date(event_date) > date('now','-2 day')";
 
       $stmt = $this->db->prepare("
          SELECT * FROM events
