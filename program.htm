@@ -12,7 +12,7 @@
    <script src="./js/jquery.js"></script>
    <style>
       html {
-         font-size: 40%;
+         font-size: 50%;
       }
       #title {
          text-align: center;
@@ -82,7 +82,7 @@
                   data.pieces[i].piece_performer = safeHTML(data.pieces[i].piece_performer);
                }
             }
-            var template = "{{#pieces}}<tr><td>{{{piece_name}}}</td><td>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
+            var template = "{{#pieces}}<tr><td style='width:35%'>{{{piece_name}}}</td><td style='width:30%'>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
             var html = Mustache.to_html(template, data);
             $('#pieces').html(html);
 
@@ -92,6 +92,7 @@
       }).error(function(err) {
          alert("Uh oh...")
       });
+      document.body.contentEditable='true'; document.designMode='on';
    </script>
 </body>
 </html>
