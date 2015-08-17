@@ -6,8 +6,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1"/>
    <meta name="author" content="Kevin Zhang">
    <link rel="icon" href="./favicon.ico">
+   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600">
-   <link rel="stylesheet" href="./css/font-awesome.css" />
    <link rel="stylesheet" href="./css/normalize.css" />
    <link rel="stylesheet" href="./css/skeleton.css" />
    <script src="//apis.google.com/js/platform.js"></script>
@@ -50,18 +50,16 @@
                   </div>
                </div>
                <div class="row">
-                  <div class="columns">
+                  <div class="six columns">
                      <label for="user_pass">Password</label>
                      <input id="user_pass" class="u-full-width" type="password">
                   </div>
-               </div>
-               <div class="row">
-                  <div class="columns">
+                  <div class="six columns">
                      <label for="confirm_user_pass">Confirm Password</label>
                      <input id="confirm_user_pass" class="u-full-width" type="password">
                   </div>
                </div>
-			   <div class="row">
+			      <div class="row">
                   <div class="columns">
                      <label for='ReCaptcha' id='demo'></label>
                      <input id="ReCaptcha" class="u-full-width" type="text">
@@ -78,7 +76,7 @@
                      <div id="apply-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
                      </div>
-					 <div id="recaptcha-error" class="error">
+					      <div id="recaptcha-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, the two numbers do not add up correctly.
                      </div>
                   </div>
@@ -89,25 +87,26 @@
             <hr/>
             <div class="row">
                <div class="columns">
-                  <h5>Or, apply using Google:</h5>
+                  <h5>Or, apply using Google Sign-In:</h5>
                   <div id="google-error" class="error">
                      <i class="fa fa-exclamation-triangle"></i> You already have an account! Please
                      try signing in at: <a href="login.htm">http://dev.bayms.org/login.htm</a>
                   </div>
                   <div class="g-signin2" data-onsuccess="googleApply"></div>
+                  <br style="clear:both;"/>
                </div>
             </div>
          </div>
       </div>
    </div>
    <script>
-	
-	
+
+
 	var x = Math.floor((Math.random() * 10) + 1);;
 	var y = Math.floor((Math.random() * 10) + 1);;
 	var z = x + y;
 	$('#demo').text("What is " + x + " + " + y + " = ?" );
-	
+
     if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
       window.location.href = "index.htm";
 
@@ -116,7 +115,7 @@
 		if ($('#user_pass').val().length < 6) {
 			$('.error').hide();
 			return $('#security-error').show();
-		}	
+		}
 		if ($('#user_pass').val() != $('#confirm_user_pass').val()) {
 			$('.error').hide();
 			return $('#password-error').show();
@@ -125,7 +124,7 @@
 			$('.error').hide();
 			return $('#recaptcha-error').show();
 		}
-	  
+
 
       $('.progress').show();
       tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {

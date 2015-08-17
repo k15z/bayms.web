@@ -348,6 +348,16 @@ baymsApp.controller('eventsController', function($scope) {
    $scope.submitPiece = function(event_id) {
       $scope.isError = false;
       $scope.isWorking = true;
+      if ($scope.submit_piece.piece_information) {
+         var link = $scope.submit_piece.piece_information;
+         if (link.indexOf(".") >= 0) {
+            // probably a link
+            link = link.trim();
+            if (link.substr(0,4) != "http")
+               link = "http://" + link;
+         }
+         $scope.submit_piece.piece_information = link;
+      }
       $.ajax({
          method: "POST",
          url: "./api/api.php?x=submit_piece",

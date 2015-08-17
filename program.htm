@@ -10,6 +10,7 @@
    <link rel="stylesheet" href="./css/skeleton.css" />
    <script src="./js/mustache.js"></script>
    <script src="./js/jquery.js"></script>
+   <script src="./js/colResizable.js"></script>
    <style>
       html {
          font-size: 50%;
@@ -68,7 +69,6 @@
          data: {event_id: event_id}
       }).done(function(data) {
          if (data) {
-            console.log(data);
             var template = "{{event_date}} - {{event_time}} - {{event_location}}";
             var html = Mustache.to_html(template, data);
             $('#title').html(html);
@@ -82,9 +82,10 @@
                   data.pieces[i].piece_performer = safeHTML(data.pieces[i].piece_performer);
                }
             }
-            var template = "{{#pieces}}<tr><td style='width:35%'>{{{piece_name}}}</td><td style='width:30%'>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
+            var template = "{{#pieces}}<tr><td>{{{piece_name}}}</td><td>{{{piece_composer}}}</td><td>{{{piece_performer}}}</td></tr>{{/pieces}}";
             var html = Mustache.to_html(template, data);
             $('#pieces').html(html);
+            $("table").colResizable({liveDrag:true});
 
          } else {
             alert("Uh oh...")

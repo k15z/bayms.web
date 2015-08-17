@@ -52,6 +52,10 @@ button.warning:hover {
    background-color: tomato;
 }
 
+input:invalid {
+   outline: dotted salmon 2px;
+}
+
 .clickable {
    cursor: pointer;
 }

@@ -163,6 +163,23 @@ class BAYMS {
    }
 
    /**
+    * Returns information about all users who have set `want_carpool` to 1.
+    */
+   public function getAllCarpools() {
+      if ($this->user_type < 1)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         SELECT * FROM users WHERE want_carpool == 1
+      ");
+      $result = array();
+      $users = $stmt->execute();
+      while ($user = $users->fetchArray(SQLITE3_ASSOC))
+         $result[] = $user;
+      return $result;
+   }
+
+   /**
     * Returns an array of information about the user specified by $user_id. If
     * the user_id is not specified, the current logged-in user's user_id is
     * used. This function uses the verifyUserID function to handle permissions.
@@ -239,7 +256,8 @@ class BAYMS {
          "instrument_2", "instrument_2_about",
          "instrument_3", "instrument_3_about",
          "performance_experience", "additional_information",
-         "ensemble_solo", "ensemble_choir", "ensemble_woodwind", "ensemble_orchestra"
+         "ensemble_solo", "ensemble_choir", "ensemble_woodwind", "ensemble_orchestra",
+         "want_carpool"
       ];
       $found = false;
       $partial = "";

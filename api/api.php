@@ -70,6 +70,10 @@ switch ($x) {
       $result = $bayms->getAllUsers();
       die(json_encode($result));
 
+   case 'get_all_carpools':
+      $result = $bayms->getAllCarpools();
+      die(json_encode($result));
+
    case 'get_user':
       $_REQUEST['user_id'] = isset($_REQUEST['user_id']) ? $_REQUEST['user_id'] : false;
       $result = $bayms->getUser($_REQUEST['user_id']);

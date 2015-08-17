@@ -5,12 +5,12 @@
    <meta name="viewport" content="width=device-width, initial-scale=1"/>
    <meta name="author" content="Kevin Zhang">
    <link rel="icon" href="./favicon.ico">
+   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Raleway:400,300,600">
-   <link rel="stylesheet" href="./css/font-awesome.css" />
-   <link rel="stylesheet" href="./css/normalize.css" />
-   <link rel="stylesheet" href="./css/skeleton.css" />
-   <link rel="stylesheet" href="./css/app.css" />
-   <link rel="stylesheet" href="./css/bootstrap-dropdowns.css" />
+   <link rel="stylesheet" href="./css/bootstrap-dropdowns.css"/>
+   <link rel="stylesheet" href="./css/normalize.css"/>
+   <link rel="stylesheet" href="./css/skeleton.css"/>
+   <link rel="stylesheet" href="./css/app.css"/>
    <script src="./js/jquery.js"></script>
    <script src="./js/jquery-ui.js"></script>
    <script src="./js/angular.js"></script>
@@ -18,7 +18,7 @@
    <script src="./js/app.js"></script>
    <script>
    if (!sessionStorage.getItem('user_name') && !sessionStorage.getItem('google_token'))
-      window.location.href = "login.htm";
+   window.location.href = "login.htm";
    </script>
 </head>
 <body ng-controller="baymsController">
@@ -27,9 +27,9 @@
    <nav id="header">
       <div class="container">
          <div class="row">
-            <button ng-show="user_type >= 0" ng-class="{active: tab == 0}" ng-click="tab = 0">Profile</button>
-            <button ng-show="user_type >= 1" ng-class="{active: tab == 1}" ng-click="tab = 1">Events</button>
-            <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2">Members</button>
+            <button ng-show="user_type >= 0" ng-class="{active: tab == 0}" ng-click="tab = 0"><i class="fa fa-pencil"></i> Profile</button>
+            <button ng-show="user_type >= 1" ng-class="{active: tab == 1}" ng-click="tab = 1"><i class="fa fa-database"></i> Events</button>
+            <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2"><i class="fa fa-users"></i> Members</button>
             <button class="u-pull-right" onclick="sessionStorage.clear();window.location.reload();">Log Out</button>
          </div>
       </div>
@@ -43,41 +43,48 @@
             <div class="row">
                <div class="six columns">
                   <label for="student_name">Student Name</label>
-                  <input ng-model="profile.student_name" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Full Name" id="student_name">
+                  <input required ng-model="profile.student_name" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Full Name" id="student_name">
                   <label for="student_phone">Student Phone</label>
-                  <input ng-model="profile.student_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="student_phone">
+                  <input required ng-model="profile.student_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="student_phone">
                   <label for="student_email">Student Email</label>
-                  <input ng-model="profile.student_email" ng-blur="updateProfile()" class="u-full-width" type="email" placeholder="you@email.com" id="student_email">
+                  <input required ng-model="profile.student_email" ng-blur="updateProfile()" class="u-full-width" type="email" placeholder="you@email.com" id="student_email">
                   <label for="student_email">Student Birthday</label>
                   <input ng-model="profile.student_birthday" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="mm/dd/yyyy" id="student_email">
                </div>
                <div class="six columns">
                   <label for="parent_name">Parent Name</label>
-                  <input ng-model="profile.parent_name" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Full Name" id="parent_name">
+                  <input required ng-model="profile.parent_name" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Full Name" id="parent_name">
                   <label for="parent_phone">Parent Phone</label>
-                  <input ng-model="profile.parent_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="parent_phone">
+                  <input required ng-model="profile.parent_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="parent_phone">
                   <label for="parent_email">Parent Email</label>
-                  <input ng-model="profile.parent_email" ng-blur="updateProfile()" class="u-full-width" type="email" placeholder="you@email.com" id="parent_email">
+                  <input required ng-model="profile.parent_email" ng-blur="updateProfile()" class="u-full-width" type="email" placeholder="you@email.com" id="parent_email">
                   <label for="parent_phone">Parent Phone (2)</label>
                   <input ng-model="profile.parent_2_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="parent_phone">
                </div>
             </div>
             <div class="row">
-              <div class="four columns">
-                 <label for="home_phone">Home Phone</label>
-                 <input ng-model="profile.home_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="home_phone">
-              </div>
+               <div class="three columns">
+                  <label for="home_phone">Home Phone</label>
+                  <input ng-model="profile.home_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="home_phone">
+               </div>
+               <div class="three columns">
+                  <label for="home_address">Current School</label>
+                  <input ng-model="profile.current_school" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Lower/middle/upper school..." id="current_school">
+               </div>
                <div class="four columns">
                   <label for="home_address">Home Address</label>
                   <input ng-model="profile.home_address" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Street address, city, state, zip code..." id="home_address">
                </div>
-               <div class="four columns">
-                  <label for="home_address">Current School</label>
-                  <input ng-model="profile.current_school" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Lower/middle/upper school..." id="current_school">
+               <div ng-show="user_type >= 1" class="two columns">
+                  <label for="want_carpool">Carpool Map</label>
+                  <label>
+                     <input ng-model="profile.want_carpool" ng-true-value="1" ng-false-value="0" type="checkbox" id="want_carpool">
+                     <span class="label-body">I'm in!</span>
+                  </label>
                </div>
             </div>
             <div class="row">
-               <div class="four columns">
+               <div class="five columns">
                   <label for="instrument_1">Instrument 1</label>
                   <input list="instruments" ng-model="profile.instrument_1" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_1">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_1_about" ng-blur="updateProfile()" class="u-full-width" placeholder="Experience level, years played..." id="instrument_1_about"></textarea>
@@ -87,24 +94,24 @@
                   <input list="instruments" ng-model="profile.instrument_2" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_2">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_2_about" ng-blur="updateProfile()" class="u-full-width" placeholder="Experience level, years played..." id="instrument_2_about"></textarea>
                </div>
-               <div class="four columns">
+               <div class="three columns">
                   <label for="instrument_3">Instrument 3</label>
                   <input list="instruments" ng-model="profile.instrument_3" class="u-full-width" type="text" placeholder="Instrument name..." id="instrument_3">
                   <textarea rows="5" style="height:auto;" ng-model="profile.instrument_3_about" ng-blur="updateProfile()" class="u-full-width" placeholder="Experience level, years played..." id="instrument_3_about"></textarea>
                </div>
                <datalist id="instruments">
-                  <option value="Cello">
-                  <option value="Clarinet">
-                  <option value="Flute">
-                  <option value="Guitar">
-                  <option value="Oboe">
-                  <option value="Piano">
-                  <option value="Trombone">
-                  <option value="Trumpet">
-                  <option value="Violin">
-                  <option value="Viola">
-                  <option value="Voice">
-                  <option value="Saxophone">
+                  <option value="Cello"/>
+                  <option value="Clarinet"/>
+                  <option value="Flute"/>
+                  <option value="Guitar"/>
+                  <option value="Oboe"/>
+                  <option value="Piano"/>
+                  <option value="Trombone"/>
+                  <option value="Trumpet"/>
+                  <option value="Violin"/>
+                  <option value="Viola"/>
+                  <option value="Voice"/>
+                  <option value="Saxophone"/>
                </datalist>
             </div>
             <div class="row">
@@ -114,9 +121,28 @@
                </div>
             </div>
             <div class="row">
-               <div class="column">
-                  <label for="additional_information">Additional Information</label>
-                  <textarea rows="4" style="height:auto;" ng-model="profile.additional_information" ng-blur="updateProfile()" class="u-full-width" placeholder="Anything you want to add?" id="additional_information"></textarea>
+               <div class="ten columns">
+                  <label for="additional_information">Student Biography</label>
+                  <textarea rows="6" style="height:auto;" ng-model="profile.additional_information" ng-blur="updateProfile()" class="u-full-width" placeholder="Anything you want to add?" id="additional_information"></textarea>
+               </div>
+               <div class="two columns">
+                  <label>Interests</label>
+                  <label>
+                     <input ng-model="profile.ensemble_solo" ng-true-value="1" ng-false-value="0" type="checkbox">
+                     <span class="label-body">Solos</span>
+                  </label>
+                  <label>
+                     <input ng-model="profile.ensemble_choir" ng-true-value="1" ng-false-value="0" type="checkbox">
+                     <span class="label-body">Choir</span>
+                  </label>
+                  <label>
+                     <input ng-model="profile.ensemble_woodwind" ng-true-value="1" ng-false-value="0" type="checkbox">
+                     <span class="label-body">Woodwind</span>
+                  </label>
+                  <label>
+                     <input ng-model="profile.ensemble_orchestra" ng-true-value="1" ng-false-value="0" type="checkbox">
+                     <span class="label-body">Orchestra</span>
+                  </label>
                </div>
             </div>
             <div class="row">
@@ -129,7 +155,11 @@
             <div class="row">
                <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
                <input class="button-primary pull-right" type="submit" value="Save">
-               <button ng-show="auth.user_name" class="warning pull-right" onclick="sessionStorage.clear(); window.location.href='password.htm';" style="margin-right:5px;">Change Password</button>
+            </div>
+            <div class="row">
+               <h5>Additional Options</h5>
+               <a ng-show="profile.want_carpool" class="button" target="_blank" href="map.htm"><i class="fa fa-map"></i> Carpool Map</a>
+               <button ng-show="auth.user_name" onclick="sessionStorage.clear(); window.location.href='password.htm';" style="margin-right:5px;"><i class="fa fa-lock"></i> Change Password</button>
             </div>
          </form>
       </div>
@@ -151,7 +181,7 @@
 
          <!-- Events Menu -->
          <div class="three columns">
-            <button eid="0" ng-show="user_type >= 2" ng-click="eid = 0" ng-class="{'button-primary': eid == 0}" class="u-full-width">Create Event</button>
+            <button eid="0" ng-show="user_type >= 2" ng-click="eid = 0" ng-class="{'button-primary': eid == 0}" class="u-full-width">New Event</button>
             <button eid="{{event.event_id}}" ng-repeat="event in events" ng-click="$parent.eid = event.event_id" ng-class="{'button-primary': $parent.eid == {{event.event_id}}}" class="u-full-width">{{event.event_id}}: {{event.event_date}}</button>
          </div>
 
@@ -249,18 +279,18 @@
                               <span ng-show="piece.piece_approved == 0" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, true)"><i class="fa fa-square-o"></i></span>
                               <span ng-show="piece.piece_approved == 1" ng-class="{clickable: user_type >= 2}" ng-click="approvePiece(piece.piece_id, false)"><i class="fa fa-check-square-o"></i></span>
                               <div ng-show="piece.user_id == user_id || user_type >= 2" class="dropdown" style="position: fixed;" id="menu-{{piece.piece_id}}">
-                                <ul class="dropdown-menu" role="menu">
-                                  <li>
-                                    <a ng-click="updatePiece(piece)" class="pointer" role="menuitem" tabindex="1">
-                                       Edit Piece
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a ng-click="deletePiece(piece.piece_id)" class="pointer" role="menuitem" tabindex="1">
-                                       Delete Piece
-                                    </a>
-                                  </li>
-                                </ul>
+                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                       <a ng-click="updatePiece(piece)" class="pointer" role="menuitem" tabindex="1">
+                                          Edit Piece
+                                       </a>
+                                    </li>
+                                    <li>
+                                       <a ng-click="deletePiece(piece.piece_id)" class="pointer" role="menuitem" tabindex="1">
+                                          Delete Piece
+                                       </a>
+                                    </li>
+                                 </ul>
                               </div>
                            </td>
                         </tr>
@@ -404,9 +434,18 @@
                   </td>
                </tr>
                <tr>
-                  <th>Additional Information</th>
+                  <th>Student Biography</th>
                   <td>
                      {{user.additional_information}}<br/>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Interests</th>
+                  <td>
+                     <li ng-show="user.ensemble_solo">Solo</li>
+                     <li ng-show="user.ensemble_choir">Choir</li>
+                     <li ng-show="user.ensemble_woodwind">Woodwind</li>
+                     <li ng-show="user.ensemble_orchestra">Orchestra</li>
                   </td>
                </tr>
             </table>
