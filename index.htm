@@ -63,11 +63,15 @@
                </div>
             </div>
             <div class="row">
-               <div class="seven columns">
+              <div class="four columns">
+                 <label for="home_phone">Home Phone</label>
+                 <input ng-model="profile.home_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="home_phone">
+              </div>
+               <div class="four columns">
                   <label for="home_address">Home Address</label>
                   <input ng-model="profile.home_address" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Street address, city, state, zip code..." id="home_address">
                </div>
-               <div class="five columns">
+               <div class="four columns">
                   <label for="home_address">Current School</label>
                   <input ng-model="profile.current_school" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Lower/middle/upper school..." id="current_school">
                </div>
@@ -358,6 +362,10 @@
                <tr>
                   <th>Parent Email</th>
                   <td>{{user.parent_email}}</td>
+               </tr>
+               <tr>
+                  <th>Home Phone</th>
+                  <td>{{user.home_phone}}</td>
                </tr>
                <tr>
                   <th>Home Address</th>
