@@ -45,6 +45,8 @@
        * injection attacks while still allowing <br/> and <b></b> tags.
        */
       function safeHTML(html) {
+        if (!html)
+            return "";
          var safe = html;
          safe = safe.split("<br>").join("12br21");
          safe = safe.split("<br/>").join("12br321");
