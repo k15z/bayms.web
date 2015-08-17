@@ -311,11 +311,17 @@ class BAYMS {
     * Returns information about each event in the events table.
     */
    public function getAllEvents() {
+      $where = "";
+      if ($this->user_type < 2)
+         $where = "WHERE date(event_date) < date('now','-2 day')";
+
       $stmt = $this->db->prepare("
          SELECT * FROM events
+         $where
          ORDER BY date(event_date)
       ");
       $result = array();
+
       $events = $stmt->execute();
       while ($event = $events->fetchArray(SQLITE3_ASSOC)) {
          $event['pieces'] = $this->getAllPieces($event['event_id']);
