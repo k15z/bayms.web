@@ -43,12 +43,16 @@ baymsApp.controller('profileController', function($scope) {
          $scope.isError = false;
       } else {
          $scope.isError = true;
+         sessionStorage.clear();
+         window.location.href = "login.htm";
       }
       $scope.$apply();
    }).error(function(err) {
       $scope.isError = true;
       $scope.isWorking = false;
       $scope.$apply();
+      sessionStorage.clear();
+      window.location.href = "login.htm";
    });
 
    // $scope.profile -> update_user
