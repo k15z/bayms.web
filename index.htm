@@ -358,14 +358,21 @@
       <div class="row">
          <!-- Members Menu -->
          <div class="three columns">
+            <div class="row">
+               <div class="columns">
+                  <label for="search">Search</label>
+                  <input ng-model="search" id="search" type="text" class="u-full-width" placeholder="search..."></input>
+               </div>
+            </div>
+            <hr/>
             <h5>Applicants</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 0}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 0} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
             <hr/>
             <h5>Members</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 1}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 1} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
             <hr/>
             <h5>Admins</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 2}" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 2} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
          </div>
          <!-- Member Display -->
          <div class="nine columns">
