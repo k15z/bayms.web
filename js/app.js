@@ -399,6 +399,17 @@ baymsApp.controller('membersController', function($scope) {
       }).done(function(data) {
          $scope.isWorking = false;
          if (data) {
+            for (var i = 0; i < data.length; i++) {
+               data[i].interests = "";
+               if (data[i].ensemble_solo >= 1)
+                  data[i].interests += "solo ";
+               if (data[i].ensemble_choir >= 1)
+                  data[i].interests += "choir ";
+               if (data[i].ensemble_woodwind >= 1)
+                  data[i].interests += "woodwind ";
+               if (data[i].ensemble_orchestra >= 1)
+                  data[i].interests += "orchestra ";
+            }
             $scope.users = data;
             $scope.isError = false;
          } else {
