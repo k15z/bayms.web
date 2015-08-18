@@ -39,6 +39,11 @@
    <div ng-controller="profileController" ng-show="tab == 0" class="container">
       <div class="row">
          <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Profile</h2>
+         <p ng-show="user_type == 0">
+            Hi <b>{{profile.user_name}}!</b> As an applicant, you have limited access to the BAYMS.Web
+            portal. Please fill out your profile; once our staff finishes reviewing your application to
+            join the Bay Area Youth Music Society, you will be contacted to schedule an audition.
+         </p>
          <form ng-submit="updateProfile()">
             <div class="row">
                <div class="six columns">
