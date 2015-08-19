@@ -59,7 +59,7 @@
                      <input id="confirm_user_pass" class="u-full-width" type="password">
                   </div>
                </div>
-			      <div class="row">
+               <div class="row">
                   <div class="columns">
                      <label for='ReCaptcha' id='demo'></label>
                      <input id="ReCaptcha" class="u-full-width" type="text">
@@ -76,7 +76,7 @@
                      <div id="apply-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
                      </div>
-					      <div id="recaptcha-error" class="error">
+                     <div id="recaptcha-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, the two numbers do not add up correctly.
                      </div>
                   </div>
@@ -100,31 +100,28 @@
       </div>
    </div>
    <script>
+   // Redirect
+   if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
+   window.location.href = "index.htm";
 
+   // ReCaptcha
+   var z = (function(){
+      var x = Math.floor((Math.random() * 10) + 1);
+      var y = Math.floor((Math.random() * 10) + 1);
+      $('#demo').text("What is " + x + " + " + y + " = ?" );
+      return x + y;
+   })();
 
-	var x = Math.floor((Math.random() * 10) + 1);;
-	var y = Math.floor((Math.random() * 10) + 1);;
-	var z = x + y;
-	$('#demo').text("What is " + x + " + " + y + " = ?" );
-
-    if (sessionStorage.getItem('user_name') || sessionStorage.getItem('google_token'))
-      window.location.href = "index.htm";
-
-    $("#apply").submit(function(event) {
-		event.preventDefault();
-		if ($('#user_pass').val().length < 6) {
-			$('.error').hide();
-			return $('#security-error').show();
-		}
-		if ($('#user_pass').val() != $('#confirm_user_pass').val()) {
-			$('.error').hide();
-			return $('#password-error').show();
-		}
-		if (parseInt($('#ReCaptcha').val()) != z) {
-			$('.error').hide();
-			return $('#recaptcha-error').show();
-		}
-
+   // Traditional Authetnication
+   $("#apply").submit(function(event) {
+      event.preventDefault();
+      $('.error').hide();
+      if ($('#user_pass').val().length < 6)
+         return $('#security-error').show();
+      if ($('#user_pass').val() != $('#confirm_user_pass').val())
+         return $('#password-error').show();
+      if (parseInt($('#ReCaptcha').val()) != z)
+         return $('#recaptcha-error').show();
 
       $('.progress').show();
       tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {
@@ -132,7 +129,7 @@
          if (data) {
             window.location.href = "index.htm";
          } else {
-			$('.error').hide();
+            $('.error').hide();
             $('#apply-error').show();
          }
       });
@@ -158,10 +155,11 @@
       });
    }
 
+   // Google Authentication
    function googleApply(googleUser) {
       if (!sessionStorage.getItem('google_token'))
-         gapi.auth2.getAuthInstance().signOut();
-     var google_token = googleUser.getAuthResponse().id_token;
+      gapi.auth2.getAuthInstance().signOut();
+      var google_token = googleUser.getAuthResponse().id_token;
       $.ajax({
          method: "POST",
          url: "./api/api.php?x=google_apply",
