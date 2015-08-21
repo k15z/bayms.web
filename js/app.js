@@ -38,6 +38,7 @@ baymsApp.controller('profileController', function($scope) {
    }).done(function(data) {
       $scope.isWorking = false;
       if (data) {
+         sessionStorage.setItem('user_type', data.user_type);
          $scope.$root.user_id = data.user_id;
          $scope.profile = data;
          $scope.isError = false;
