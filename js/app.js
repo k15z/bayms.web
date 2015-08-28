@@ -435,6 +435,12 @@ baymsApp.controller('membersController', function($scope) {
 
    // user -> $scope.user
    $scope.displayUser = function(user) {
+      if ($scope.user && $scope.user.user_id == user.user_id) {
+         $('button[uid]').removeClass('button-primary');
+         sessionStorage.removeItem('uid');
+         $scope.user = false;
+         return;
+      }
       $scope.user = user;
       // Save selected user to sessionStorage
       sessionStorage.setItem('uid', user.user_id);

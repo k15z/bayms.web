@@ -373,16 +373,35 @@
          <!-- Members Menu -->
          <div class="three columns">
             <h5>Applicants</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 0} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in (filtered.applicants = (users | filter: {user_type: 0} | filter: search))" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
             <hr/>
             <h5>Members</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 1} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in (filtered.members = (users | filter: {user_type: 1} | filter: search))" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
             <hr/>
             <h5>Admins</h5>
-            <button uid="{{user.user_id}}" ng-repeat="user in users | filter: {user_type: 2} | filter: search" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
+            <button uid="{{user.user_id}}" ng-repeat="user in (filtered.admins = (users | filter: {user_type: 2} | filter: search))" ng-click="displayUser(user)" class="u-full-width">{{user.user_name}}</button>
          </div>
          <!-- Member Display -->
          <div class="nine columns">
+            <div ng-show="!user">
+               <h3>Email Manager</h3>
+               <p>Applicants are NOT included in the below lists.</p>
+               <div>
+                  <h5>Student Emails</h5>
+                  <div>
+                     <span ng-repeat="user in filtered.members" ng-show="user.student_email">{{user.student_email}}, </span>
+                     <span ng-repeat="user in filtered.admins" ng-show="user.student_email">{{user.student_email}}, </span>
+                  </div>
+               </div>
+               <br/>
+               <div>
+                  <h5>Parent Emails</h5>
+                  <div>
+                     <span ng-repeat="user in filtered.members" ng-show="user.parent_email">{{user.parent_email}}, </span>
+                     <span ng-repeat="user in filtered.admins" ng-show="user.parent_email">{{user.parent_email}}, </span>
+                  </div>
+               </div>
+            </div>
             <table ng-show="user" class="u-full-width">
                <tr>
                   <th>Student Name</th>
