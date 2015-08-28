@@ -2,6 +2,7 @@ var baymsApp = angular.module('baymsApp', ['ng-context-menu']);
 
 // Authentication & Tabs
 baymsApp.controller('baymsController', function($scope) {
+   $scope.required = {"done": $('input:invalid').length <= 0};
    $scope.auth = {}; // Sent to server with almost every request
    $scope.user_type = sessionStorage.getItem('user_type');
    if (sessionStorage.getItem('user_name')) {
@@ -48,6 +49,8 @@ baymsApp.controller('profileController', function($scope) {
          window.location.href = "login.htm";
       }
       $scope.$apply();
+      $scope.required.done = $('input:invalid').length <= 0;
+      $scope.$apply();
    }).error(function(err) {
       $scope.isError = true;
       $scope.isWorking = false;
@@ -72,6 +75,8 @@ baymsApp.controller('profileController', function($scope) {
          } else {
             $scope.isError = true;
          }
+         $scope.$apply();
+         $scope.required.done = $('input:invalid').length <= 0;
          $scope.$apply();
       }).error(function(err) {
          $scope.isError = true;

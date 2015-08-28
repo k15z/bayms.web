@@ -28,8 +28,8 @@
       <div class="container">
          <div class="row">
             <button ng-show="user_type >= 0" ng-class="{active: tab == 0}" ng-click="tab = 0"><i class="fa fa-pencil"></i> Profile</button>
-            <button ng-show="user_type >= 1" ng-class="{active: tab == 1}" ng-click="tab = 1"><i class="fa fa-calendar"></i> Events</button>
-            <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2"><i class="fa fa-users"></i> Members</button>
+            <button ng-show="user_type >= 1 && required.done" ng-class="{active: tab == 1}" ng-click="tab = 1"><i class="fa fa-calendar"></i> Events</button>
+            <button ng-show="user_type >= 2 && required.done" ng-class="{active: tab == 2}" ng-click="tab = 2"><i class="fa fa-users"></i> Members</button>
             <button class="u-pull-right" onclick="sessionStorage.clear();window.location.reload();"><i class="fa fa-sign-out"></i> Log Out</button>
          </div>
       </div>
@@ -43,6 +43,10 @@
             Hi <b>{{profile.user_name}}!</b> As an applicant, you have limited access to the BAYMS.Web
             portal. Please fill out your profile; once our staff finishes reviewing your application to
             join the Bay Area Youth Music Society, you will be contacted to schedule an audition.
+         </p>
+         <p ng-show="!required.done && user_type > 0">
+            <b>Warning:</b> Although you are a member, you will not be able to access any of the advanced 
+            features until you complete the required fields (highlighted in red).
          </p>
          <form ng-submit="updateProfile()">
             <div class="row">
