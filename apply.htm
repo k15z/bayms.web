@@ -77,7 +77,7 @@
                         <i class="fa fa-exclamation-triangle"></i> Sorry, that username is already taken.
                      </div>
                      <div id="recaptcha-error" class="error">
-                        <i class="fa fa-exclamation-triangle"></i> Hint: Who is god?
+                        <i class="fa fa-exclamation-triangle"></i> Sorry, that is incorrect.
                      </div>
                   </div>
                </div>
@@ -108,10 +108,11 @@
    var z = (function(){
       var x = Math.floor((Math.random() * 10) + 1);
       var y = Math.floor((Math.random() * 10) + 1);
+	  var forNow = 2018;
       //$('#demo').text("What is " + x + " + " + y + " = ?" );
       //return x + y;
 	  $('#demo').text("Confirmation code:" );
-      return "Daniel";
+      return forNow;
    })();
 
    // Traditional Authetnication
@@ -122,10 +123,9 @@
          return $('#security-error').show();
       if ($('#user_pass').val() != $('#confirm_user_pass').val())
          return $('#password-error').show();
-      //if (parseInt($('#ReCaptcha').val()) != z)
-      //   return $('#recaptcha-error').show();
-	  if (parseInt($('#ReCaptcha')) != z)
+      if (parseInt($('#ReCaptcha').val()) != z)
          return $('#recaptcha-error').show();
+	 
 
       $('.progress').show();
       tryApply($('#user_name').val(), $('#user_pass').val(), function(data) {
