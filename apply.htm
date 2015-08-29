@@ -65,6 +65,12 @@
                      <input id="ReCaptcha" class="u-full-width" type="text">
                   </div>
                </div>
+			   <div class="row">
+                  <div class="columns">
+                     <input type="checkbox" id="terms">By checking this box you agree to the <a href="ToS.htm" target="_blank">Terms of Service</a> <br>
+                  </div>
+               </div>
+			   
                <div class="row">
                   <div class="columns">
                      <div id="security-error" class="error">
@@ -78,6 +84,9 @@
                      </div>
                      <div id="recaptcha-error" class="error">
                         <i class="fa fa-exclamation-triangle"></i> Sorry, the confirmation is incorrect.
+                     </div>
+					 <div id="terms-error" class="error">
+                        <i class="fa fa-exclamation-triangle"></i> You must agree to the terms of service.
                      </div>
                   </div>
                </div>
@@ -125,6 +134,8 @@
          return $('#password-error').show();
       if (parseInt($('#ReCaptcha').val()) != z)
          return $('#recaptcha-error').show();
+	  if ($('terms'))
+         return $('#terms-error').show();
 	 
 
       $('.progress').show();
