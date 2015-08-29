@@ -67,7 +67,7 @@
                </div>
 			   <div class="row">
                   <div class="columns">
-                     <input type="checkbox" id="terms">By checking this box you agree to the <a href="ToS.htm" target="_blank">Terms of Service</a> <br>
+                     <input type="checkbox" id="terms"> By checking this box you agree to the <a href="ToS.htm" target="_blank">Terms of Service</a> <br>
                   </div>
                </div>
 			   
@@ -90,7 +90,7 @@
                      </div>
                   </div>
                </div>
-               <input class="button-primary" type="submit" value="Apply">
+               <input class="button-primary" type="submit" id ="apply" value="Apply">
                <p>Already a member? <a href="login.htm">Sign in here</a>!</p>
             </form>
             <hr/>
@@ -134,8 +134,8 @@
          return $('#password-error').show();
       if (parseInt($('#ReCaptcha').val()) != z)
          return $('#recaptcha-error').show();
-	  if ($('terms'))
-         return $('#terms-error').show();
+	  if (!$("#terms").is(':checked'))
+		 return $('#terms-error').show();
 	 
 
       $('.progress').show();
