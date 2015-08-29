@@ -108,8 +108,10 @@
    var z = (function(){
       var x = Math.floor((Math.random() * 10) + 1);
       var y = Math.floor((Math.random() * 10) + 1);
-      $('#demo').text("What is " + x + " + " + y + " = ?" );
-      return x + y;
+      //$('#demo').text("What is " + x + " + " + y + " = ?" );
+      //return x + y;
+	  $('#demo').text("Confirmation code:" );
+      return "daniel is god";
    })();
 
    // Traditional Authetnication
@@ -120,7 +122,9 @@
          return $('#security-error').show();
       if ($('#user_pass').val() != $('#confirm_user_pass').val())
          return $('#password-error').show();
-      if (parseInt($('#ReCaptcha').val()) != z)
+      //if (parseInt($('#ReCaptcha').val()) != z)
+      //   return $('#recaptcha-error').show();
+	  if (parseInt($('#ReCaptcha')) != z)
          return $('#recaptcha-error').show();
 
       $('.progress').show();
