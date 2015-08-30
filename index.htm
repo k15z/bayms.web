@@ -58,7 +58,7 @@
                   <label for="student_email">Student Email</label>
                   <input required ng-model="profile.student_email" ng-blur="updateProfile()" class="u-full-width" type="email" placeholder="you@email.com" id="student_email">
                   <label for="student_email">Student Birthday</label>
-                  <input ng-model="profile.student_birthday" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="mm/dd/yyyy" id="student_email">
+                  <input required ng-model="profile.student_birthday" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="mm/dd/yyyy" id="student_email">
                </div>
                <div class="six columns">
                   <label for="parent_name">Parent Name</label>
@@ -74,7 +74,7 @@
             <div class="row">
                <div class="three columns">
                   <label for="home_phone">Home Phone</label>
-                  <input ng-model="profile.home_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="home_phone">
+                  <input required ng-model="profile.home_phone" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="(###)-###-####" id="home_phone">
                </div>
                <div class="three columns">
                   <label for="home_address">Current School</label>
