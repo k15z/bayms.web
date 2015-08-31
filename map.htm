@@ -47,8 +47,10 @@
       </p>
    </div>
    <script>
-   if (!sessionStorage.getItem('user_name') && !sessionStorage.getItem('google_token'))
+   if (!sessionStorage.getItem('user_name') && !sessionStorage.getItem('google_token')) {
+      alert("Sorry, something went wrong.");
       window.location.href = "index.htm"; // must be logged in
+   }
 
    function initMap() {
       var geocoder = new google.maps.Geocoder();
