@@ -303,7 +303,8 @@ class BAYMS {
          "instrument_2", "instrument_2_about",
          "instrument_3", "instrument_3_about",
          "performance_experience", "additional_information",
-         "ensemble_solo", "ensemble_choir", "ensemble_woodwind", "ensemble_orchestra",
+         "ensemble_solo", "ensemble_ensemble", "ensemble_choir", 
+         "ensemble_woodwind", "ensemble_orchestra",
          "want_carpool"
       ];
       $found = false;
