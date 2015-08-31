@@ -409,6 +409,8 @@ baymsApp.controller('membersController', function($scope) {
                data[i].interests = "";
                if (data[i].ensemble_solo >= 1)
                   data[i].interests += "solo ";
+               if (data[i].ensemble_ensemble >= 1)
+                  data[i].interests += "ensemble ";
                if (data[i].ensemble_choir >= 1)
                   data[i].interests += "choir ";
                if (data[i].ensemble_woodwind >= 1)
