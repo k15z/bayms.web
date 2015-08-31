@@ -38,8 +38,8 @@ class BAYMS {
          $this->user_id = $login['user_id'];
          $this->user_type = $login['user_type'];
          $this->can_see_carpool = 
-         	$login['user_type'] > 1 or 
-         	str_word_count($login["home_address"]) > 3 and $login['user_type'] > 0;
+         	$login['user_type'] > 1 || 
+         	str_word_count($login["home_address"]) > 3 && $login['user_type'] > 0;
          return true;
       }
       return false;
@@ -128,8 +128,8 @@ class BAYMS {
          $this->user_id = $login['user_id'];
          $this->user_type = $login['user_type'];
          $this->can_see_carpool = 
-         	$login['user_type'] > 1 or 
-         	str_word_count($login["home_address"]) > 3 and $login['user_type'] > 0;
+         	$login['user_type'] > 1 || 
+         	str_word_count($login["home_address"]) > 3 && $login['user_type'] > 0;
          return true;
       }
       return false;
