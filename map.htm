@@ -67,7 +67,11 @@
          }
       }).done(function(data) {
          for (var i = 0; i < data.length; i++) {
-            addressMarker(data[i].home_address, geocoder, map, data[i]);
+            if (!data[i].home_address)
+               continue;
+            setTimeout(function(data) {
+               addressMarker(data.home_address, geocoder, map, data);
+            }, 250*i, data[i]);
          }
       });
    }
