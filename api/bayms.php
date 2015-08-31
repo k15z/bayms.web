@@ -7,6 +7,7 @@ class BAYMS {
    private $db = false;
    private $user_id = false;
    private $user_type = false;
+   private $can_see_carpool = false;
 
    /**
     * Connects to the bayms.db SQLite database file. Be careful when dealing
@@ -36,6 +37,9 @@ class BAYMS {
       if ((bool)password_verify($user_pass, $login['user_pass'])) {
          $this->user_id = $login['user_id'];
          $this->user_type = $login['user_type'];
+         $this->can_see_carpool = 
+         	$login['user_type'] > 1 or 
+         	str_word_count($login["home_address"]) > 3 and $login['user_type'] > 0;
          return true;
       }
       return false;
@@ -123,6 +127,9 @@ class BAYMS {
       if ($login) {
          $this->user_id = $login['user_id'];
          $this->user_type = $login['user_type'];
+         $this->can_see_carpool = 
+         	$login['user_type'] > 1 or 
+         	str_word_count($login["home_address"]) > 3 and $login['user_type'] > 0;
          return true;
       }
       return false;
@@ -206,7 +213,7 @@ class BAYMS {
     * Returns information about all users who have set `want_carpool` to 1.
     */
    public function getAllCarpools() {
-      if ($this->user_type < 1)
+      if (!$this->can_see_carpool)
          throw new Exception('Permission denied.');
 
       $stmt = $this->db->prepare("
