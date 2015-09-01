@@ -87,7 +87,7 @@
                <div ng-show="user_type >= 1" class="two columns">
                   <label for="want_carpool">Carpool Map</label>
                   <label>
-                     <input ng-model="profile.want_carpool" ng-true-value="1" ng-false-value="0" type="checkbox" id="want_carpool">
+                     <input ng-model="profile.want_carpool" ng-blur="updateProfile()" ng-true-value="1" ng-false-value="0" type="checkbox" id="want_carpool">
                      <span class="label-body">I'm in!</span>
                   </label>
                </div>
