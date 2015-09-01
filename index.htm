@@ -22,7 +22,6 @@
    </script>
 </head>
 <body ng-controller="baymsController">
-
    <!-- Header -->
    <nav id="header">
       <div class="container">
@@ -39,6 +38,22 @@
    <div ng-controller="profileController" ng-show="tab == 0" class="container">
       <div class="row">
          <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Profile</h2>
+            <script>
+                /*$(document).ready(function () {
+                    $("#imageUpload").hide();
+                });
+                $("#show").click(function(){
+                    $("#imageUpload").show();
+                    $("#show").hide();
+                });*/
+          </script>
+    <img src="api/uploads/{{profile.user_name}}.png" height="100">
+    <form id="imageUpload" action="api/upload.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input  type="submit" value="Upload Image" name="submit">
+    <input type="hidden" name="user_id" value="{{profile.user_name}}">
+    </form>
          <p ng-show="user_type == 0">
             Hi <b>{{profile.user_name}}!</b> As an applicant, you have limited access to the BAYMS.Web
             portal. Please fill out your profile; once our staff finishes reviewing your application to
@@ -50,6 +65,7 @@
          </p>
          <form ng-submit="updateProfile()">
             <div class="row">
+                
                <div class="six columns">
                   <label for="student_name">Student Name</label>
                   <input required ng-model="profile.student_name" ng-blur="updateProfile()" class="u-full-width" type="text" placeholder="Full Name" id="student_name">
