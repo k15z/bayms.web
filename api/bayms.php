@@ -628,5 +628,20 @@ class BAYMS {
       $delete = $stmt->execute();
       return (bool)$delete;
    }
+   
+   /**
+    * Returns information about all news.
+    */
+   public function getNews() {
+      $stmt = $this->db->prepare("
+         SELECT * FROM news
+      ");
+      $result = array();
+      $news = $stmt->execute();
+      while ($new = $news->fetchArray(SQLITE3_ASSOC))
+         $result[] = $new;
+      return $result;
+   }
+
 }
 ?>

@@ -56,6 +56,10 @@ switch ($x) {
    case 'get_piece':
       $result = $bayms->getPiece($_REQUEST['piece_id']);
       die(json_encode($result));
+   
+   case 'get_news':
+      $result = $bayms->getNews();
+      die(json_encode($result));
 }
 
 // Must login now.
