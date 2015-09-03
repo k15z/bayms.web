@@ -541,7 +541,7 @@
    </div>
 
    <!-- Events -->
-   <div ng-controller="newsController">
+   <div ng-show="user.user_type >= 1" ng-controller="newsController">
       <div id="news-toggle" ng-click="news.isVisible = true">
          <i class="fa fa-newspaper-o"></i>
       </div>

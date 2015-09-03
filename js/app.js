@@ -544,7 +544,8 @@ baymsApp.controller('newsController', function($scope) {
    $.ajax({
       method: "POST",
       url: "./api/api.php?x=get_news",
-      dataType: "json"
+      dataType: "json",
+      data: $scope.auth
    }).done(function(data) {
       if (data)
          $scope.news = data;

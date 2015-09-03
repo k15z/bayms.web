@@ -633,6 +633,9 @@ class BAYMS {
     * Returns information about all news.
     */
    public function getNews() {
+      if ($this->user_type < 1)
+         throw new Exception('Permission denied.');
+
       $stmt = $this->db->prepare("
          SELECT * FROM news
       ");
