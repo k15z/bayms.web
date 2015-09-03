@@ -195,7 +195,7 @@
          <!-- Events Menu -->
          <div class="three columns">
             <button eid="0" ng-show="user_type >= 2" ng-click="eid = 0" ng-class="{'button-primary': eid == 0}" class="u-full-width">New Event</button>
-            <button eid="{{event.event_id}}" ng-repeat="event in events" ng-click="$parent.eid = event.event_id" ng-class="{'button-primary': $parent.eid == {{event.event_id}}}" class="u-full-width">{{event.event_id}}: {{event.event_date}}</button>
+            <button eid="{{event.event_id}}" ng-repeat="event in events" ng-click="$parent.eid = event.event_id" ng-class="{'button-primary': $parent.eid == {{event.event_id}}}" class="u-full-width">{{event.event_date}}</button>
          </div>
 
          <!-- Events Content -->
