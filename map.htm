@@ -96,11 +96,11 @@
          });
          marker.addListener('click', function() {
             $('#display').html(
-               "<h5>" + user.user_name + "</h5>" +
-               "<p><b>Student Name:</b><br/>" + user.student_name + "</p>" +
-               "<p><b>Parent Name:</b><br/>" + user.parent_name + "</p>" +
-               "<p><b>Parent Phone:</b><br/>" + user.parent_phone + "</p>" +
-               "<p><b>Parent Email:</b><br/>" + user.parent_email + "</p>"
+               "<h5>" + user.user_name.replace(/\W+/g, " ")  + "</h5>" +
+               "<p><b>Student Name:</b><br/>" + user.student_name.replace(/\W+/g, " ") + "</p>" +
+               "<p><b>Parent Name:</b><br/>" + user.parent_name.replace(/\W+/g, " ") + "</p>" +
+               "<p><b>Parent Phone:</b><br/>" + user.parent_phone.replace(/\W+/g, " ") + "</p>" +
+               "<p><b>Parent Email:</b><br/>" + user.parent_email.replace(/\W+/g, " ") + "</p>"
             );
          });
        } else {
