@@ -236,30 +236,30 @@
             <div ng-repeat="event in events" ng-show="$parent.eid == {{event.event_id}}">
 
                <!-- Update Event -->
-               <form ng-show="user_type >= 2" ng-submit="updateEvent(event)">
+               <form ng-show="user_type >= 1" ng-submit="updateEvent(event)">
                   <div class="row">
                      <div class="six columns">
                         <label for="event_date">Event Date</label>
-                        <input ng-model="event.event_date" class="u-full-width" placeholder="mm/dd/yyyy" type="text" id="event_date">
+                        <input ng-disabled="user_type == 1" ng-model="event.event_date" class="u-full-width" placeholder="mm/dd/yyyy" type="text" id="event_date">
                      </div>
                      <div class="six columns">
                         <label for="event_time">Event Time</label>
-                        <input ng-model="event.event_time" class="u-full-width" placeholder="hh:mm PM" type="text" id="event_time">
+                        <input ng-disabled="user_type == 1" ng-model="event.event_time" class="u-full-width" placeholder="hh:mm PM" type="text" id="event_time">
                      </div>
                   </div>
                   <div class="row">
                      <div class="columns">
                         <label for="event_location">Event Location</label>
-                        <input ng-model="event.event_location" class="u-full-width" placeholder="Location" type="text" id="event_location">
+                        <input ng-disabled="user_type == 1" ng-model="event.event_location" class="u-full-width" placeholder="Location" type="text" id="event_location">
                      </div>
                   </div>
                   <div class="row">
                      <div class="columns">
                         <label for="event_recording">Event Recording</label>
-                        <input ng-model="event.event_recording" class="u-full-width" placeholder="https://..." type="text" id="event_recording">
+                        <input ng-disabled="user_type == 1" ng-model="event.event_recording" class="u-full-width" placeholder="https://..." type="text" id="event_recording">
                      </div>
                   </div>
-                  <div class="row">
+                  <div class="row" ng-show="user_type > 1">
                      <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
                      <button ng-click="deleteEvent(event.event_id)" class="warning pull-right" type="button" style="margin-left:5px;">Delete Event</button>
                      <input class="button-primary pull-right" type="submit" value="Update Event">
