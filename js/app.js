@@ -216,6 +216,37 @@ baymsApp.controller('eventsController', function($scope) {
          loadEvents();
       });
    };
+   
+   // source_event, target_event -> clone_event
+   $scope.cloneEvent = function(source_event, target_event) {
+	  if (!source_event || !target_event)
+		 return;
+      if (!confirm("Are you sure you want to clone this event?"))
+         return;
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=clone_event",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, {
+            "source_event": source_event,
+            "target_event": target_event
+         })
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadEvents();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         loadEvents();
+      });
+   };
 
    // open window with program.htm#<event_id> and print
    $scope.printEvent = function(event_id) {
@@ -283,7 +314,10 @@ baymsApp.controller('eventsController', function($scope) {
             $scope.isError = true;
          }
          // Also save order after approving/disapproving pieces
-         $scope.saveOrder(sessionStorage.getItem('eid'));
+         //$scope.saveOrder(sessionStorage.getItem('eid'));
+         loadEvents();
+         //$scope.isWorking = false;
+         //$scope.$apply();
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;

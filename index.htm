@@ -317,6 +317,32 @@
                   <hr ng-show="user_type >= 2"/>
                </div>
 
+               <!--  Event Clone -->
+               <div ng-show="user_type > 1">
+                  <h5>Event Clone</h5>
+                  <form ng-submit="cloneEvent(clone_event.source_event, clone_event.target_event)">
+                     <div class="row">
+                        <div class="six columns">
+                           <label for="source_event">Source Event</label>
+                           <select ng-model="clone_event.source_event" class="u-full-width">
+                              <option ng-repeat="event in events" value="{{event.event_id}}">{{event.event_date}}</option>
+                           </select>
+                        </div>
+                        <div class="six columns">
+                           <label for="target_event">Target Event</label>
+                           <select ng-model="clone_event.target_event" class="u-full-width">
+                              <option ng-repeat="event in events" value="{{event.event_id}}">{{event.event_date}}</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                        <input class="button-primary pull-right" type="submit" value="Clone">
+                     </div>
+                  </form>
+                  <hr/>
+               </div>
+               
                <!-- Piece Submission -->
                <div>
                   <h5>Piece Submission</h5>

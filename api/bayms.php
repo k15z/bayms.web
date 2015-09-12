@@ -474,6 +474,25 @@ class BAYMS {
    }
 
    /**
+    * Clones all pieces in the source_event to target_event.
+    * Only user_type 2 and higher can use this function.
+    */
+   public function cloneEvent($source_event, $target_event) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+      	 INSERT INTO pieces (piece_order, piece_approved, user_id, event_id, piece_name, piece_composer, piece_performer, piece_length, piece_information, piece_instrument)
+      		SELECT piece_order, piece_approved, user_id, :target_event, piece_name, piece_composer, piece_performer, piece_length, piece_information, piece_instrument FROM pieces WHERE
+      			event_id = :source_event
+      ");
+      $stmt->bindValue(':source_event', $source_event);
+      $stmt->bindValue(':target_event', $target_event);
+      $delete = $stmt->execute();
+      return (bool)$delete;
+   }
+
+   /**
     * Returns all pieces associated with the specified $event_id.
     */
    public function getAllPieces($event_id) {
