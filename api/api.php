@@ -124,6 +124,10 @@ switch ($x) {
       $result = $bayms->deleteEvent($_REQUEST['event_id']);
       die(json_encode($result));
 
+   case 'clone_event':
+      $result = $bayms->cloneEvent($_REQUEST['source_event'], $_REQUEST['target_event']);
+      die(json_encode($result));
+
    case 'submit_piece':
       $result = $bayms->submitPiece($_REQUEST);
       die(json_encode($result));
