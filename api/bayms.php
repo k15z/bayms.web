@@ -488,8 +488,8 @@ class BAYMS {
       ");
       $stmt->bindValue(':source_event', $source_event);
       $stmt->bindValue(':target_event', $target_event);
-      $delete = $stmt->execute();
-      return (bool)$delete;
+      $clone = $stmt->execute();
+      return (bool)$clone;
    }
 
    /**

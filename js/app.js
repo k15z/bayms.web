@@ -314,10 +314,7 @@ baymsApp.controller('eventsController', function($scope) {
             $scope.isError = true;
          }
          // Also save order after approving/disapproving pieces
-         //$scope.saveOrder(sessionStorage.getItem('eid'));
-         loadEvents();
-         //$scope.isWorking = false;
-         //$scope.$apply();
+         $scope.saveOrder(sessionStorage.getItem('eid'));
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
