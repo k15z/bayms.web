@@ -662,7 +662,7 @@ class BAYMS {
       $news = $stmt->execute();
       while ($new = $news->fetchArray(SQLITE3_ASSOC))
          $result[] = $new;
-      return $result;
+      return array_reverse ($result);
    }
 
 }
