@@ -15,8 +15,11 @@ baymsApp.controller('baymsController', function($scope) {
       $scope.auth.google_token = sessionStorage.getItem('google_token');
    }
 
-   // Restore current tab (or set to default 0)
-   $scope.tab = 0;
+   // Restore current tab (or set to default)
+   if ($scope.user_type > 0)
+       $scope.tab = 1;
+   else
+       $scope.tab = 0; 
    if (sessionStorage.getItem('tab'))
       $scope.tab = sessionStorage.getItem('tab');
    // Save the current tab in sessionStorage
