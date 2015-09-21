@@ -465,6 +465,13 @@ class BAYMS {
          throw new Exception('Permission denied.');
 
       $stmt = $this->db->prepare("
+         DELETE FROM pieces WHERE
+            event_id = :event_id
+      ");
+      $stmt->bindValue(':event_id', $event_id);
+      $delete = $stmt->execute();
+       
+      $stmt = $this->db->prepare("
          DELETE FROM events WHERE
             event_id = :event_id
       ");
