@@ -266,35 +266,35 @@ baymsApp.controller('eventsController', function($scope) {
    // event_id -> order_piece
    $scope.saveOrder = function(event_id) {
       var pieces = $('#sortable-'+event_id).find('tr');
+      var data = {};
       for (var i = 0; i < pieces.length; i++) {
-         var data = {
-            piece_id: $(pieces[i]).attr('pid'),
-            piece_order: i
-         };
-         // Stagger the order_piece requests to prevent database locking
-         setTimeout(function(data) {
-            $scope.isError = false;
-            $scope.isWorking = true;
-            $scope.$apply();
-            $.ajax({
-               method: "POST",
-               url: "./api/api.php?x=order_piece",
-               dataType: "json",
-               data: $.extend({}, $scope.auth, data)
-            }).done(function(data) {
-               $scope.isWorking = false;
-               if (data) {
-                  $scope.isError = false;
-               } else {
-                  $scope.isError = true;
-               }
-            }).error(function(err) {
-               $scope.isError = true;
-               $scope.isWorking = false;
-            });
-         }, i*50, data)
-      };
-      setTimeout(loadEvents, pieces.length*50+1000);
+    	  data[$(pieces[i]).attr('pid')] = i*10;
+	  }
+      {
+	    $scope.isError = false;
+	    $scope.isWorking = true;
+	    $scope.$apply();
+	    $.ajax({
+	       method: "POST",
+	       url: "./api/api.php?x=order_pieces",
+	       dataType: "json",
+	       data: $.extend({}, $scope.auth, {
+	    	   "piece_orders": data
+	       })
+	    }).done(function(data) {
+	       $scope.isWorking = false;
+	       if (data) {
+	          $scope.isError = false;
+	       } else {
+	          $scope.isError = true;
+	       }
+	       loadEvents();
+	    }).error(function(err) {
+	       $scope.isError = true;
+	       $scope.isWorking = false;
+	       loadEvents();
+	    });        
+      }		         
    };
 
    // piece_id, approved -> approve_piece; event_id -> order_piece

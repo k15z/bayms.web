@@ -136,6 +136,10 @@ switch ($x) {
       $result = $bayms->orderPiece($_REQUEST['piece_id'], $_REQUEST['piece_order']);
       die(json_encode($result));
 
+   case 'order_pieces': 
+	  $result = $bayms->orderPieces($_REQUEST['piece_orders']);
+	  die(json_encode($result));
+      
    case 'approve_piece':
       $_REQUEST['approved'] = isset($_REQUEST['approved']) ? $_REQUEST['approved'] : true;
       $_REQUEST['approved'] = filter_var($_REQUEST['approved'], FILTER_VALIDATE_BOOLEAN);

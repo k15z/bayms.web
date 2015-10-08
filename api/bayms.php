@@ -570,6 +570,23 @@ class BAYMS {
       $update = $stmt->execute();
       return (bool)$update;
    }
+   
+public function orderPieces($piece_orders) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');	 
+	  foreach($piece_orders as $piece_id => $piece_order) {
+	      $stmt = $this->db->prepare("
+	         UPDATE pieces SET
+	            piece_order = :piece_order
+	         WHERE
+	            piece_id = :piece_id
+	      ");
+      	  $stmt->bindValue(':piece_id', $piece_id);
+      	  $stmt->bindValue(':piece_order', $piece_order);
+          $update = $stmt->execute();
+	  }     
+      return (bool)$update;
+   }
 
    /**
     * Sets the piece_approved value of the piece with the specified $piece_id
