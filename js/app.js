@@ -348,11 +348,11 @@ baymsApp.controller('eventsController', function($scope) {
          } else {
             $scope.isError = true;
          }
-         loadEvents();
+         $scope.saveOrder(sessionStorage.getItem('eid'));        
       }).error(function(err) {
          $scope.isError = true;
          $scope.isWorking = false;
-         loadEvents();
+         $scope.saveOrder(sessionStorage.getItem('eid'));
       });
    }
 
