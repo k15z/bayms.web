@@ -153,6 +153,18 @@ switch ($x) {
    case 'delete_piece':
       $result = $bayms->deletePiece($_REQUEST['piece_id']);
       die(json_encode($result));
+
+   case 'insert_news':
+      $result = $bayms->insertNews($_REQUEST);
+      die(json_encode($result));
+
+   case 'update_news':
+      $result = $bayms->updateNews($_REQUEST, $_REQUEST['news_id']);
+      die(json_encode($result));
+
+   case 'delete_news':
+      $result = $bayms->deleteNews($_REQUEST['news_id']);
+      die(json_encode($result));
 }
 
 ?>

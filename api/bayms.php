@@ -688,6 +688,79 @@ public function orderPieces($piece_orders) {
          $result[] = $new;
       return array_reverse ($result);
    }
+   /**
+    * Inserts a new row into the news table, and then calls the updateNews
+    * function to actually store the values provided by the $news array. Only
+    * user_type 2 and higher can use this function.
+    */
+   public function insertNews($news) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+       
+      $stmt = $this->db->prepare("
+         INSERT INTO news DEFAULT VALUES
+      ");
+      $insert = $stmt->execute();
+      if ($insert) {
+         $news_id = $this->db->lastInsertRowID();
+         return $this->updateNews($news, $news_id);
+      }
+      return false;
+   }
+   
+   /**
+    * Extracts relevant values from the $news array and updates the news
+    * with $news_id. Only user_type 2 and higher can use this function.
+    */
+   public function updateNews($news, $news_id) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
 
+      $relevant = [
+         "news_title", "news_message"
+      ];
+      $found = false;
+      $partial = "";
+      foreach($news as $key => $value) {
+         if (in_array($key, $relevant)) {
+            $found = true;
+            $partial .= $key . ' = :' . $key . ', ';
+         }
+      }
+      $partial = rtrim($partial, ', ');
+      if (!$found)
+         return true;
+
+      $stmt = $this->db->prepare("
+         UPDATE news SET
+            $partial
+            WHERE
+            news_id = :news_id
+      ");
+      $stmt->bindValue(':news_id', $news_id);
+      foreach($news as $key => $value)
+         if (in_array($key, $relevant))
+            $stmt->bindValue(':' . $key, $value);
+
+      $update = $stmt->execute();
+      return (bool)$update;
+   }
+   
+   /**
+    * Deletes the the news specified by $news_id. Only user_type 2 and higher
+    * can use this function.
+    */
+   public function deleteNews($news_id) {
+      if ($this->user_type < 2)
+         throw new Exception('Permission denied.');
+
+      $stmt = $this->db->prepare("
+         DELETE FROM news WHERE
+            news_id = :news_id
+      ");
+      $stmt->bindValue(':news_id', $news_id);
+      $delete = $stmt->execute();
+      return (bool)$delete;
+   }
 }
 ?>

@@ -15,6 +15,8 @@
    <script src="./js/jquery-ui.js"></script>
    <script src="./js/angular.js"></script>
    <script src="./js/ng-context-menu.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.2.3/showdown.min.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.js"></script>
    <script src="./js/app.js"></script>
    <script>
    if (!sessionStorage.getItem('user_name') && !sessionStorage.getItem('google_token'))
@@ -30,6 +32,7 @@
             <button ng-show="user_type >= 0" ng-class="{active: tab == 0}" ng-click="tab = 0"><i class="fa fa-pencil"></i> Profile</button>
             <button ng-show="(user_type >= 1 && required.done) || user_type >= 2" ng-class="{active: tab == 1}" ng-click="tab = 1"><i class="fa fa-calendar"></i> Events</button>
             <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2"><i class="fa fa-users"></i> Members</button>
+            <button ng-show="(user_type >= 1 && required.done) || user_type >= 2" ng-class="{active: tab == 3}" ng-click="tab = 3"><i class="fa fa-newspaper-o"></i> News</button>
             <button class="u-pull-right" onclick="sessionStorage.clear();window.location.reload();"><i class="fa fa-sign-out"></i> Log Out</button>
          </div>
       </div>
@@ -181,7 +184,7 @@
    <!-- Events -->
    <div ng-controller="eventsController" ng-show="tab == 1" class="container">
       <div class="row">
-         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Events</h2>(click <i class="fa fa-newspaper-o"></i> at the bottom right corner for current schedule)
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Events</h2>
       </div>
       <div class="row">
          <div class="columns">
@@ -525,25 +528,82 @@
       </div>
    </div>
 
-   <!-- Events -->
-   <div ng-show="user_type >= 1" ng-controller="newsController">
-      <div id="news-toggle" ng-click="news.isVisible = true">
-         <i class="fa fa-newspaper-o"></i>
+   <!-- News -->
+   <div ng-controller="newsController" ng-show="tab == 3" class="container">
+      <div class="row">
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> News</h2>
       </div>
-      <div id="news-container" ng-show="news.isVisible">
-         <div id="news-greyout" ng-click="news.isVisible = false"></div>
-         <div class="container">
-            <div class="row">
-               <div id="news-panel" class="six columns offset-by-three">
-                  <h4>Recent Updates:</h4>
-                  <div ng-repeat="item in news" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;">
-                     <p>
-                        <span style="font-size:1.5em"><b>{{item.news_title}}</b></span>
-                        <br/>
-                        {{item.news_message}}
-                     </p>
+      <div class="row">
+         <div class="columns">
+            <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+               <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
+            </div>
+         </div>
+      </div>
+
+      <!-- News Display -->
+      <div ng-repeat="news in all_news" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;">
+         <h4>{{news.news_title}}</h4>
+         <div ng-bind-html="markdownString(news.news_message)"></div>
+      </div>
+
+      <div class="row" ng-show="user_type >= 2">
+         <!-- News Menu -->
+         <div class="three columns">
+            <button nid="0" ng-show="user_type >= 2" ng-click="nid = 0" ng-class="{'button-primary': nid == 0}" class="u-full-width">New News</button>
+            <button nid="{{news.news_id}}" ng-repeat="news in all_news" ng-click="$parent.nid = news.news_id" ng-class="{'button-primary': $parent.nid == {{news.news_id}}}" class="u-full-width">{{news.news_title}}</button>
+         </div>
+
+         <!-- News Content -->
+         <div class="nine columns">
+            <!-- Create News -->
+            <div ng-show="nid == 0">
+               <form ng-submit="createNews()">
+                  <div class="row">
+                     <div class="twelve columns">
+                        <label for="news_title">News Title</label>
+                        <input ng-model="create_news.news_title" class="u-full-width" placeholder="News Title" type="text">
+                     </div>
+                     <div class="twelve columns">
+                        <label for="news_message">News Message</label>(Support Markdown, see example at <a href="http://showdownjs.github.io/demo/" target="_blank">here</a>)
+                        <textarea ng-model="create_news.news_message" class="u-full-width" placeholder="News Message" type="text"></textarea>
+                     </div>
+                     <div class="twelve columns">
+                        <label for="rendered_news_message">Rendered News Message</label>
+                        <div ng-bind-html="markdownString(create_news.news_message)" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
+                     </div>
                   </div>
-               </div>
+                  <div class="row">
+                     <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                     <input class="button-primary pull-right" type="submit" value="Create News">
+                  </div>
+               </form>
+            </div>
+
+            <!-- Update News -->
+            <div ng-repeat="news in all_news" ng-show="$parent.nid == {{news.news_id}}">
+               <form ng-submit="updateNews(news)">
+                  <div class="row">
+                     <div class="twelve columns">
+                        <label for="news_title">News Title</label>
+                        <input ng-model="news.news_title" class="u-full-width" placeholder="News Title" type="text">
+                     </div>
+                     <div class="twelve columns">
+                        <label for="news_message">News Message</label>(Support Markdown, see example at <a href="http://showdownjs.github.io/demo/" target="_blank">here</a>)
+                        <textarea ng-model="news.news_message" class="u-full-width" placeholder="News Message" type="text"></textarea>
+                     </div>
+                     <div class="twelve columns">
+                        <label for="rendered_news_message">Rendered News Message</label>
+                        <div ng-bind-html="markdownString(news.news_message)" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
+                     </div>
+                  </div>
+                  <div class="row" ng-show="user_type > 1">
+                     <i ng-show="isWorking" class="progress pull-left fa fa-circle-o-notch fa-spin fa-2x"></i>
+                     <button ng-click="deleteNews(news.news_id)" class="warning pull-right" type="button" style="margin-left:5px;">Delete News</button>
+                     <input class="button-primary pull-right" type="submit" value="Update News">
+                  </div>
+                  <hr/>
+               </form>              
             </div>
          </div>
       </div>

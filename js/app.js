@@ -1,4 +1,4 @@
-var baymsApp = angular.module('baymsApp', ['ng-context-menu']);
+var baymsApp = angular.module('baymsApp', ['ng-context-menu','ngSanitize']);
 
 // Authentication & Tabs
 baymsApp.controller('baymsController', function($scope) {
@@ -573,15 +573,127 @@ baymsApp.controller('membersController', function($scope) {
    }
 });
 
-// Events
-baymsApp.controller('newsController', function($scope) {
-   $.ajax({
-      method: "POST",
-      url: "./api/api.php?x=get_news",
-      dataType: "json",
-      data: $scope.auth
-   }).done(function(data) {
-      if (data)
-         $scope.news = data;
+// News
+baymsApp.controller('newsController', ['$scope', '$sce', function($scope, $sce) {
+   $scope.isError = false;
+   $scope.isWorking = true;
+
+   // Save news_id in sessionStorage
+   $scope.$watch('nid', function(newNID, oldNID) {
+      if (newNID >= 0)
+         sessionStorage.setItem('nid', newNID);
    });
-});
+
+   // get_news -> $scope.all_news
+   function loadNews() {
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=get_news",
+         dataType: "json",
+         data: $scope.auth
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.all_news = data;
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         $scope.$apply();
+
+         // Restore current news from sessionStorage
+         if (sessionStorage.hasOwnProperty('nid'))
+            $('button[nid='+sessionStorage.getItem('nid')+']').click();
+         else if ($scope.user_type >= 2)
+            $('button[nid=0]').click();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         $scope.$apply();
+      });
+   }; loadNews();
+
+   // $scope.create_news -> insert_news
+   $scope.createNews = function() {
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=insert_news",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, $scope.create_news)
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadNews();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         loadNews();
+      });
+   };
+
+   // current_news -> update_news
+   $scope.updateNews = function(current_news) {
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=update_news",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, current_news)
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadNews();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         loadNews();
+      });
+   };
+
+   // news_id -> delete_news
+   $scope.deleteNews = function(news_id) {
+      if (!confirm("Are you sure you want to delete this news?"))
+         return;
+      $scope.isError = false;
+      $scope.isWorking = true;
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=delete_news",
+         dataType: "json",
+         data: $.extend({}, $scope.auth, {
+            "news_id": news_id
+         })
+      }).done(function(data) {
+         $scope.isWorking = false;
+         if (data) {
+            $scope.isError = false;
+         } else {
+            $scope.isError = true;
+         }
+         loadNews();
+      }).error(function(err) {
+         $scope.isError = true;
+         $scope.isWorking = false;
+         loadNews();
+      });
+   };
+
+   // markdown text
+   $scope.markdownString = function(text) {
+      var converter = new showdown.Converter({tables:true, strikethrough:true});
+      return $sce.trustAsHtml(converter.makeHtml(text));
+   }
+}]);
