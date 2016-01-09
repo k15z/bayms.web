@@ -544,7 +544,7 @@
       </div>
 
       <!-- News Display -->
-      <div ng-repeat="news in all_news" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;">
+      <div ng-repeat="news in all_news" style="overflow:auto;border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;">
          <h4>{{news.news_title}}</h4>
          <div ng-bind-html="markdownString(news.news_message)"></div>
       </div>
@@ -572,7 +572,7 @@
                      </div>
                      <div class="twelve columns">
                         <label for="rendered_news_message">Rendered News Message</label>
-                        <div ng-bind-html="markdownString(create_news.news_message)" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
+                        <div ng-bind-html="markdownString(create_news.news_message)" style="overflow:auto;border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
                      </div>
                   </div>
                   <div class="row">
@@ -596,7 +596,7 @@
                      </div>
                      <div class="twelve columns">
                         <label for="rendered_news_message">Rendered News Message</label>
-                        <div ng-bind-html="markdownString(news.news_message)" style="border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
+                        <div ng-bind-html="markdownString(news.news_message)" style="overflow:auto;border:1px solid #ddd; border-radius:3px; margin-bottom:3px; padding:3px;"></div>
                      </div>
                   </div>
                   <div class="row" ng-show="user_type > 1">
