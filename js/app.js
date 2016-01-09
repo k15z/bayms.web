@@ -671,6 +671,8 @@ baymsApp.controller('newsController', ['$scope', '$sce', function($scope, $sce) 
       $scope.isWorking = true;
       $.ajax({
          method: "POST",
+         
+         
          url: "./api/api.php?x=delete_news",
          dataType: "json",
          data: $.extend({}, $scope.auth, {
@@ -697,3 +699,8 @@ baymsApp.controller('newsController', ['$scope', '$sce', function($scope, $sce) 
       return $sce.trustAsHtml(converter.makeHtml(text));
    }
 }]);
+
+baymsApp.controller('calendarController', function($scope) {
+	   $scope.isError = false;
+	   $scope.isWorking = true;
+});

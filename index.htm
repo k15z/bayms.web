@@ -33,6 +33,7 @@
             <button ng-show="(user_type >= 1 && required.done) || user_type >= 2" ng-class="{active: tab == 1}" ng-click="tab = 1"><i class="fa fa-calendar"></i> Events</button>
             <button ng-show="user_type >= 2" ng-class="{active: tab == 2}" ng-click="tab = 2"><i class="fa fa-users"></i> Members</button>
             <button ng-show="(user_type >= 1 && required.done) || user_type >= 2" ng-class="{active: tab == 3}" ng-click="tab = 3"><i class="fa fa-newspaper-o"></i> News</button>
+            <button ng-show="user_type >= 0" ng-class="{active: tab == 4}" ng-click="tab = 4"><i class="fa fa-calendar-check-o"></i> Calendar</button>
             <button class="u-pull-right" onclick="sessionStorage.clear();window.location.reload();"><i class="fa fa-sign-out"></i> Log Out</button>
          </div>
       </div>
@@ -124,6 +125,7 @@
                   <option value="Viola"/>
                   <option value="Voice"/>
                   <option value="Saxophone"/>
+                  <option value="Chinese thing"/>
                </datalist>
             </div>
             <div class="row">
@@ -531,7 +533,7 @@
    <!-- News -->
    <div ng-controller="newsController" ng-show="tab == 3" class="container">
       <div class="row">
-         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> News</h2>
+         <h2><i ng-show="isWorking" class="progress fa fa-circle-o-notch fa-spin"></i> Useless thing that no one uses</h2>
       </div>
       <div class="row">
          <div class="columns">
@@ -608,5 +610,18 @@
          </div>
       </div>
    </div>
+   
+    <!-- News -->
+   <div ng-controller="calendarController" ng-show="tab == 4" class="container">
+      <div class="row">
+         <div class="columns">
+            <div ng-show="isError" style="border-radius:4px; background-color:salmon; padding: 10px; 10px; margin-bottom: 1rem;">
+               <i class="fa fa-exclamation-triangle"></i> Something went wrong. Please try again later.
+            </div>
+            <a href="2016BAYMS-Calender.doc">Download the word file here</a>.
+         </div>
+      </div>
+   </div>
+   
 </body>
 </html>
