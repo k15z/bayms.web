@@ -697,3 +697,8 @@ baymsApp.controller('newsController', ['$scope', '$sce', function($scope, $sce) 
       return $sce.trustAsHtml(converter.makeHtml(text));
    }
 }]);
+
+baymsApp.controller('calendarController', function($scope) {
+	   $scope.isError = false;
+	   $scope.isWorking = true;
+});
