@@ -699,6 +699,21 @@ baymsApp.controller('newsController', ['$scope', '$sce', function($scope, $sce) 
 }]);
 
 baymsApp.controller('calendarController', function($scope) {
-	   $scope.isError = false;
-	   $scope.isWorking = true;
+   $scope.isError = false;
+   $.get('2016.json', function(events) {
+       $scope.events = events;
+       for (var i = 0; i < events.length; i++) {
+           // convert string to date
+           events[i].Start = new Date(events[i].Start);
+           
+           // hide old events
+           if (events[i].Start < (new Date()))
+               events[i].Expired = true;
+           
+           // explicitely get hour
+           if (!events[i].Location)
+               events[i].StartTime = (new Date(events[i].Start)).toLocaleTimeString();
+       }
+       $scope.isWorking = true;
+   });
 });
