@@ -740,7 +740,8 @@ public function orderPieces($piece_orders) {
       $stmt->bindValue(':news_id', $news_id);
       foreach($news as $key => $value)
          if (in_array($key, $relevant))
-            $stmt->bindValue(':' . $key, $value);
+            // workaround XSS
+            $stmt->bindValue(':' . $key, htmlentities($value));
 
       $update = $stmt->execute();
       return (bool)$update;
