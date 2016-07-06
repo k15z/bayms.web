@@ -20,8 +20,16 @@
    .progress {
       display: none;
       color: #33C3F0;
+   }  
+  
+   input[type=checkbox] {
+	  /* Double-sized Checkboxes */
+	  -ms-transform: scale(2); /* IE */
+	  -moz-transform: scale(2); /* FF */
+	  -webkit-transform: scale(2); /* Safari and Chrome */
+	  -o-transform: scale(2); /* Opera */
+	  padding: 10px;
    }
-
    .error {
       display: none;
       color: white;
@@ -68,7 +76,7 @@
                </div>
 			   <div class="row">
                   <div class="columns">
-                     <input type="checkbox" id="terms"> I have read and agreed to the <a href="ToS.htm" target="_blank">Terms of Service</a> <br>
+                     <input type="checkbox" id="terms">' I have read and agreed to the <a href="ToS.htm" target="_blank">Terms of Service</a> <br>
                   </div>
                </div>
 			   
