@@ -375,7 +375,7 @@ class BAYMS {
          $event['pieces'] = $this->getAllPieces($event['event_id']);
          $result[] = $event;
       }
-      return $result;
+      return array_reverse($result);
    }
 
    /**
