@@ -11,6 +11,7 @@
    <link rel="stylesheet" href="./css/normalize.css" />
    <link rel="stylesheet" href="./css/skeleton.css" />
    <script src="//apis.google.com/js/platform.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
    <script src="./js/jquery.js"></script>
    <style>
    body {
@@ -36,7 +37,7 @@
    }
    </style>
 </head>
-<body>
+<body ng-app="">
    <!--<a target="_blank" href="https://github.com/k15z/bayms.web"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
    --><div class="container">
       <div class="row">
@@ -65,6 +66,12 @@
                <input class="button-primary" type="submit" value="Login">
                <p>Not a member? <a href="apply.htm">Apply here</a>!</p>
             </form>
+            <form id="reset">
+	            <p>Forgot password? <a href="" ng-click="showme=true"> Click Bait! </a> </p>
+	               <div ng-show="showme">
+	                  <p> Enter your email: <input type="text" id="email"> <input class="button-primary" type="submit" value="confirm"> </p> 
+	               </div>
+            </form>   
             <hr/>
             <div class="row">
                <div class="columns">
@@ -84,17 +91,21 @@
       window.location.href = "index.htm";
 
    $("#login").submit(function(event) {
-      event.preventDefault();
-      $('.progress').show();
-      tryLogin($('#user_name').val(), $('#user_pass').val(), function(data) {
-         $('.progress').hide();
-         if (data) {
-            window.location.href = "index.htm";
-         } else {
-            $('#login-error').show();
-         }
-      });
-   });
+	      event.preventDefault();
+	      $('.progress').show();
+	      tryLogin($('#user_name').val(), $('#user_pass').val(), function(data) {
+	         $('.progress').hide();
+	         if (data) {
+	            window.location.href = "index.htm";
+	         } else {
+	            $('#login-error').show();
+	         }
+	      });
+	   });
+   
+   $("#reset").submit(function(event) {
+	   //incomplete
+	   });
 
    function tryLogin(user_name, user_pass, callback) {
       $.ajax({
@@ -115,7 +126,6 @@
          callback(false)
       });
    }
-
    function googleLogin(googleUser) {
       if (!sessionStorage.getItem('google_token'))
          gapi.auth2.getAuthInstance().signOut();
