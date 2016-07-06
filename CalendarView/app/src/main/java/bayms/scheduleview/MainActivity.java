@@ -9,7 +9,7 @@ import android.view.*;
 import android.widget.*;
 import android.app.*;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity  {
 
     String url = "https://dev.bayms.org/program.htm#15";
     private float x1,x2;
