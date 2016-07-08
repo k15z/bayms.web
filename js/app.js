@@ -702,3 +702,6 @@ baymsApp.controller('calendarController', function($scope) {
 	   $scope.isError = false;
 	   $scope.isWorking = true;
 });
+baymsApp.controller('publicController', function($scope) {
+      $scope.tab=0;
+});

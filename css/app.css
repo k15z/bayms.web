@@ -99,3 +99,7 @@ input:invalid {
    margin-top:5%;
    margin-bottom:5%;
 }
+
+#text-verticle-center {
+   text-align: center;
+}
