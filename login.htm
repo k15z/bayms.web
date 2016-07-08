@@ -91,17 +91,17 @@
       window.location.href = "index.htm";
 
    $("#login").submit(function(event) {
-	      event.preventDefault();
-	      $('.progress').show();
-	      tryLogin($('#user_name').val(), $('#user_pass').val(), function(data) {
-	         $('.progress').hide();
-	         if (data) {
-	            window.location.href = "index.htm";
-	         } else {
-	            $('#login-error').show();
-	         }
-	      });
-	   });
+      event.preventDefault();
+      $('.progress').show();
+      tryLogin($('#user_name').val(), $('#user_pass').val(), function(data) {
+         $('.progress').hide();
+         if (data) {
+            window.location.href = "index.htm";
+         } else {
+            $('#login-error').show();
+         }
+      });
+   });
    
    $("#reset").submit(function(event) {
 	   //incomplete

@@ -102,7 +102,7 @@ class BAYMS {
       }
       return false;
    }
-   
+   */
 
    /**
     * Accepts an id_token and uses Google's API to verify that it is valid. If
