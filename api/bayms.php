@@ -294,7 +294,6 @@ class BAYMS {
     */
    public function updateUser($user, $user_id = false) {
       $user_id = $this->verifyUserID($user_id);
-
       $relevant = [
          "student_name", "student_phone", "student_email", "student_birthday",
          "parent_name", "parent_phone", "parent_email", "parent_2_phone",

@@ -52,6 +52,12 @@
             <b>Warning:</b> Although you are a member, you will not be able to access any of the advanced 
             features until you complete the required fields (highlighted in red).
          </p>
+         <img src="{{profile.picture_link}}" height="100" width="100">
+         <form action="uploadImage.php" enctype="multipart/form-data" method="POST">
+             Choose Image : <input name="img" size="35" type="file"/><br/>
+             <input type="hidden" type="text" name="user_id" value="{{profile.student_name}}">
+            <input type="submit" name="submit" value="Upload"/>
+         </form>
          <form ng-submit="updateProfile()">
             <div class="row">
                <div class="six columns">
@@ -610,7 +616,7 @@
       </div>
    </div>
    <div ng-controller="calendarController" ng-show="tab == 4" class="container">
-      <iframe src="https://commingly.com/baymsevents/events/calendar/" frameborder="0" allowTransparency="true" width="100%" height="800" onload="onLoadHandler();"></iframe>
+      <iframe src="https://commingly.com/baymsevents/events/calendar/" frameborder="0" allowTransparency="true" width="100%" height="800"></iframe>
    </div>
 </body>
 </html>
