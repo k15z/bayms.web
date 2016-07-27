@@ -69,7 +69,11 @@
             <form id="reset">
 	            <p>Forgot password? <a href="" ng-click="showme=true"> Click Bait! </a> </p>
 	               <div ng-show="showme">
-	                  <p> Enter your email: <input type="text" id="email"> <input class="button-primary" type="submit" value="confirm"> </p> 
+	                    Enter your username: <input type="text" id="user_name2">
+	                  	<div id="reset-error" class="error">
+                        	<i class="fa fa-exclamation-triangle"></i> Username does not exist.
+                     	</div>
+	                  <input class="button-primary" type="submit" value="confirm">  
 	               </div>
             </form>   
             <hr/>
@@ -102,10 +106,6 @@
          }
       });
    });
-   
-   $("#reset").submit(function(event) {
-	   //incomplete
-	   });
 
    function tryLogin(user_name, user_pass, callback) {
       $.ajax({
@@ -126,6 +126,37 @@
          callback(false)
       });
    }
+   
+   $("#reset").submit(function(event) {
+	      event.preventDefault();
+	      $('.progress').show();
+	      tryReset($('#user_name2').val(), function(data) {
+	         $('.progress').hide();
+	         if (data) {
+	            window.location.href = "password.htm";
+	         } else {
+	            $('#reset-error').show();
+	         }
+	      });
+	   });
+
+   function tryReset(user_name, callback) {
+      $.ajax({
+         method: "POST",
+         url: "./api/api.php?x=reset_password",
+         dataType: "json",
+         data: { "user_name": user_name, "auth_token": "", "user_pass": ""}
+      }).done(function(data) {
+         if (data) {
+            callback(data);
+         } else {
+            callback(false);
+         }
+      }).error(function(err) {
+         callback(false)
+      });
+   }
+   
    function googleLogin(googleUser) {
       if (!sessionStorage.getItem('google_token'))
          gapi.auth2.getAuthInstance().signOut();

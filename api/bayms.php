@@ -67,22 +67,51 @@ class BAYMS {
    /**
     * This is a prototype for the password reset function. It has not been 
     * tested yet, and a new table needs to be added to the database.
-    
+    */ 
    public function resetPassword($user_name, $auth_token = false, $user_pass) {
-      if (!$auth_token) {
+   	$stmt = $this->db->prepare("
+            SELECT count(*) FROM users
+               WHERE user_name = :user_name
+         ");
+   	$stmt->bindValue(':user_name', strtolower($user_name));
+   	$user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+   	if ($user['count(*)']==0)
+   		return false;
+   	if (!$auth_token) {
          // generate auth_token & expiration date
-         $auth_token = md5(rand());             // random string
+         $stmt = $this->db->prepare("
+            SELECT count(*) FROM resets
+               WHERE user_name = :user_name
+         ");
+	     $stmt->bindValue(':user_name', strtolower($user_name));
+	     $reset = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+	     
+   		 $auth_token = md5(rand());             // random string
          $expiration = date("U", time()+60*60); // 1 hour later
          
-         // store auth_token in database with expire date
-         $stmt = $this->db->prepare("
-            INSERT INTO resets
-               (user_name, auth_token, expiration)
-            VALUES
-               (:user_name, $auth_token, $expiration)
-         ");
-         $stmt->bindValue(':user_name', strtolower($user_name));
-         $insert = $stmt->execute();
+         if ($reset['count(*)']>0) {
+         	$stmt = $this->db->prepare("
+       			UPDATE resets SET
+       			 	auth_token = '$auth_token', expiration = '$expiration'
+       			WHERE
+         			user_name = :user_name
+         	");
+         	
+         	$stmt->bindValue(':user_name', strtolower($user_name));
+         	$update = $stmt->execute();
+         } else {
+             // store auth_token in database with expire date
+	         $stmt = $this->db->prepare("
+	            INSERT INTO resets
+	               (user_name, auth_token, expiration)
+	            VALUES
+	               (:user_name, '$auth_token', '$expiration')
+	         ");
+         
+	         $stmt->bindValue(':user_name', strtolower($user_name));
+	         $insert = $stmt->execute();
+         }
+         
          
          // get email addresses -> send emails with $auth_token
          $stmt = $this->db->prepare("
@@ -90,19 +119,38 @@ class BAYMS {
                WHERE user_name = :user_name
          ");
          $stmt->bindValue(':user_name', strtolower($user_name));
-         $emails = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-         mail($emails->student_email, "Password Reset", $auth_token);
-         mail($emails->parent_email, "Password Reset", $auth_token);
+         $emails = $stmt->execute()->fetchArray(SQLITE3_ASSOC);         
+         mail($emails['student_email'], "Password Reset", $auth_token);
+         mail($emails['parent_email'], "Password Reset", $auth_token);
          
          return true;
       } else {
          // look for auth_token in database, and check expire date
          // if valid auth_token, then change password
          // return true/false
+      	 $stmt = $this->db->prepare("
+             SELECT * FROM resets
+                WHERE user_name = :user_name
+         ");
+      	 $stmt->bindValue(':user_name', strtolower($user_name));
+      	 $reset = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+         if ($reset['auth_token']==$auth_token && $reset['expiration']>date('U', time())) {
+	      	 $stmt = $this->db->prepare("
+	         	 UPDATE users SET
+	            	user_pass = :user_pass
+	        	 WHERE
+	            	user_name = :user_name		
+	     	 ");
+	     	 $stmt->bindValue(':user_name', strtolower($user_name));
+	     	 $stmt->bindValue(':user_pass', password_hash($user_pass, PASSWORD_DEFAULT));
+	
+	     	 $update = $stmt->execute();
+         	 return $this->login($user_name, $user_pass);
+         }
+     	 return false;
       }
       return false;
    }
-   */
 
    /**
     * Accepts an id_token and uses Google's API to verify that it is valid. If

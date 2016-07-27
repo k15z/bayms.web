@@ -60,6 +60,10 @@ switch ($x) {
    case 'get_news':
       $result = $bayms->getNews();
       die(json_encode($result));
+
+   case 'reset_password':
+      $result = $bayms->resetPassword($_REQUEST['user_name'], $_REQUEST['auth_token'], $_REQUEST['user_pass']);
+      die(json_encode($result));
 }
 
 // Must login now.
