@@ -54,7 +54,7 @@
          </p>
          <img src="{{profile.picture_link}}" height="100" width="100">
          <form action="uploadImage.php" enctype="multipart/form-data" method="POST">
-             Choose Image : <input name="img" size="35" type="file"/><br/>
+             Choose Image : <input name="img" size="35" type="file" accept="image/x-png, image/gif, image/jpeg"/><br/>
              <input type="hidden" type="text" name="user_id" value="{{profile.student_name}}">
             <input type="submit" name="submit" value="Upload"/>
          </form>
